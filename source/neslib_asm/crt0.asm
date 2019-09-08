@@ -18,7 +18,7 @@ FT_SFX_STREAMS			= 4			;number of sound effects played at once, 1..4
 	.import __STARTUP_LOAD__,__STARTUP_RUN__,__STARTUP_SIZE__
 	.import	__CODE_LOAD__   ,__CODE_RUN__   ,__CODE_SIZE__
 	.import	__RODATA_LOAD__ ,__RODATA_RUN__ ,__RODATA_SIZE__
-	.import NES_PRG_BANKS,NES_CHR_BANKS
+	.import NES_PRG_BANKS,NES_CHR_BANKS,NES_MAPPER
     .include "tools/cc65/asminc/zeropage.inc"
 
 	.export _frameCount
@@ -127,7 +127,7 @@ RLE_BYTE	=TEMP+3
     .byte $4e,$45,$53,$1a
 	.byte <NES_PRG_BANKS
 	.byte <NES_CHR_BANKS
-	.byte $12
+	.byte <NES_MAPPER
 	.byte 0
 	.res 8,0
 
