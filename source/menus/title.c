@@ -28,6 +28,10 @@ void draw_title_screen(void) {
 	put_str(NTADR_A(12, 28), currentYear);
 	put_str(NTADR_A(17, 28), gameAuthor);
 
+	#if RI_DEBUG_MODE_BOOL 
+		put_str(NTADR_A(1, 30), "DEBUG MODE ENABLED");
+	#endif
+
 	put_str(NTADR_A(10, 16), "Press Start!");
 	ppu_on_all();
 
