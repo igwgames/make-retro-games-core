@@ -3,7 +3,7 @@
 // Values are written in game_info.c
 
 // ----- RETRO INTERACTIVE CODE REPLACEMENT -----
-// ----- DO NOT EDIT BELOW THIS LINE -----
+// ----- Changes in this area are discouraged and may be lost! -----
     #define RI_EDITOR_GAME_NAME "RI Demo Game Too??"
     #define RI_EDITOR_GAME_AUTHOR "YOU!"
     #define RI_GAME_AUTHOR_CONTACT "Tweet at us! @your_twitter"

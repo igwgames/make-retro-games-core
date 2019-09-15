@@ -9,6 +9,16 @@
 
 CODE_BANK(PRG_BANK_CREDITS_MENU);
 
+// ----- RETRO INTERACTIVE CODE REPLACEMENT -----
+// ----- Changes in this area are discouraged and may be lost! -----
+    #define RI_CREDITS_TEXT \
+"Butts\n" \
+"Smelly\n" \
+"\n"\
+"What do they smell like?"
+// ----- END RETRO INTERACTIVE CODE REPLACEMENT ----- 
+
+
 void draw_win_screen(void) {
     ppu_off();
     clear_screen();
