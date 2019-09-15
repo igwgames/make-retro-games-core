@@ -32,5 +32,14 @@
         "custom": "More custom text goes here",
         "readonly": false,
         "required": false
+    },
+    {
+        "who": "You",
+        "what": "Doing stuff",
+        "readonly": false,
+        "required": false
+    },
+    {
+        "custom": "Your custom data"
     }
 ]
