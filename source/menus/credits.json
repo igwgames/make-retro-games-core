@@ -29,7 +29,7 @@
         "required": false
     },
     {
-        "custom": "More custom text goes here!",
+        "custom": "More custom text goes here",
         "readonly": false,
         "required": false
     }
