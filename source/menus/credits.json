@@ -4,27 +4,32 @@
         "what": "Game Builder",
         "readonly": true,
         "required": true
-    }, {
+    },
+    {
         "who": "You!",
         "what": "Game Creation",
         "readonly": false,
         "required": false
-    }, {
+    },
+    {
         "who": "Wolfgang (OpenGameArt)",
         "what": "Music",
         "readonly": true,
         "required": true
-    }, {
+    },
+    {
         "who": "Refresh Games (OpenGameArt)",
         "what": "Artwork",
         "readonly": true,
         "required": true
-    }, {
+    },
+    {
         "custom": "Your custom text goes here",
         "readonly": false,
         "required": false
-    }, {
-        "custom": "More custom text goes here",
+    },
+    {
+        "custom": "More of your custom text goes here",
         "readonly": false,
         "required": false
     }

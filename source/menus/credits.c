@@ -11,7 +11,7 @@ CODE_BANK(PRG_BANK_CREDITS_MENU);
 
 // ----- RETRO INTERACTIVE CODE REPLACEMENT -----
 // ----- Changes in this area are discouraged and may be lost! -----
-    #define RI_CREDITS_TEXT \
+    #define RI_CREDITS_TEXT "\"
 "Butts\n" \
 "Smelly\n" \
 "\n"\
