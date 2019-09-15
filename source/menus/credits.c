@@ -11,7 +11,7 @@ CODE_BANK(PRG_BANK_CREDITS_MENU);
 
 // ----- RETRO INTERACTIVE CODE REPLACEMENT -----
 // ----- Changes in this area are discouraged and may be lost! -----
-    #define RI_CREDITS_TEXT ""  "Game Builder\n"  "  Retro-Interactive\n"  "\n"  "Game Creation\n"  "  You!\n"  "\n"  "Music\n"  "  Wolfgang (OpenGameArt)\n"  "\n"  "Artwork\n"  "  Refresh Games (OpenGameArt)\n"  "\n"  "Your custom text goes here\n"  "More custom text goes here\n"  "Doing stuff\n"  "  You\n"  "\n"  "Your custom data\n"    ""
+    #define RI_CREDITS_TEXT ""  "Game Builder\n"  "  Retro-Interactive\n"  "\n"  "Game Creation\n"  "  You!\n"  "\n"  "Music\n"  "  Wolfgang (OpenGameArt)\n"  "\n"  "Artwork\n"  "  Refresh Games (OpenGameArt)\n"  "\n"  "Your custom text goes here\n"  "More custom text goes here\n"    ""
 // ----- END RETRO INTERACTIVE CODE REPLACEMENT ----- 
 
 
