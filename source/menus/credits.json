@@ -1,5 +1,11 @@
 [
     {
+        "custom": "----- Credits -----"
+    },
+    {
+        "isSpacer": true
+    },
+    {
         "who": "Retro-Interactive",
         "what": "Game Builder",
         "readonly": true,
@@ -24,12 +30,10 @@
         "required": true
     },
     {
-        "custom": "Your custom text goes here",
-        "readonly": false,
-        "required": false
+        "isSpacer": true
     },
     {
-        "custom": "More custom text goes here",
+        "custom": "Your custom text goes here",
         "readonly": false,
         "required": false
     },
