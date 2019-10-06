@@ -934,9 +934,13 @@ _scroll:
 	sta <TEMP
 
 	txa
-;	bne @1
+	bne @1
 	lda <TEMP
 	cmp #240
+	; NOTE: This was commented out and I uncommented it... I'm not sure why it was in use.
+	; I am afraid it was something for nes-starter-kit..
+	; Was set up as part of scrolling but I spent some time and couldn't break it. Hopefully
+	; a mistake.
 	bcs @1
 	sta <SCROLL_Y
 	lda #0

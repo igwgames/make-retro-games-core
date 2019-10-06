@@ -17,6 +17,11 @@ void clear_screen(void) {
 	vram_fill(' ' - 0x20, 0x0400);
 }
 
+void clear_screen_c(void) {
+	vram_adr(0x2800);
+	vram_fill(' ' - 0x20, 0x400);
+}
+
 // Clear the screen and put a nice border around it.
 void clear_screen_with_border(void) {
 	set_vram_update(NULL);

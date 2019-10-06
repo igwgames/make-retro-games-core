@@ -7,3 +7,5 @@ void draw_win_screen(void);
 
 // Draw a screen that credits the people involved in the game.
 void draw_credits_screen(void);
+
+void do_credits_input(void);

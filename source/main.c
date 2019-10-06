@@ -144,13 +144,14 @@ void main(void) {
                 banked_call(PRG_BANK_CREDITS_MENU, draw_win_screen);
                 fade_in();
                 banked_call(PRG_BANK_MENU_INPUT_HELPERS, wait_for_start);
-                fade_out();
 
                 // Folow it up with the credits.
                 banked_call(PRG_BANK_CREDITS_MENU, draw_credits_screen);
-                fade_in();
-                banked_call(PRG_BANK_MENU_INPUT_HELPERS, wait_for_start);
+
+                banked_call(PRG_BANK_MENU_INPUT_HELPERS, do_credits_input);
+
                 fade_out();
+
                 reset();
                 break;
             default:
