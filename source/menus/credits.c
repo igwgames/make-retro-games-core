@@ -14,14 +14,7 @@ CODE_BANK(PRG_BANK_CREDITS_MENU);
     #define RI_CREDITS_TEXT ""  "Game Builder\n"  "  Retro-Interactive\n"  "\n"  "Game Creation\n"  "  You!\n"  "\n"  "Music\n"  "  Wolfgang (OpenGameArt)\n"  "\n"  "Artwork\n"  "  Refresh Games (OpenGameArt)\n"  "\n"  "Your custom text goes here\n\n"  "More custom text goes here\n\n"  "\n\n""Thanks for playing!\n\n"    ""
 // ----- END RETRO INTERACTIVE CODE REPLACEMENT ----- 
 
-// const unsigned char creditsText[] = RI_CREDITS_TEXT;
-const unsigned char creditsText[] = \
- "Panda hat\nHat Panda 1\n\n" "Panda hat\nHat Panda 21\n\n" "Panda hat\nHat Panda 31\n\n" "Panda hat\nHat Panda 41\n\n" "Panda hat\nHat Panda 51\n\n" \
- "Panda hat\nHat Panda 2\n\n" "Panda hat\nHat Panda 22\n\n" "Panda hat\nHat Panda 32\n\n" "Panda hat\nHat Panda 42\n\n" "Panda hat\nHat Panda 52\n\n" \
- "Panda hat\nHat Panda 3\n\n" "Panda hat\nHat Panda 23\n\n" "Panda hat\nHat Panda 33\n\n" "Panda hat\nHat Panda 43\n\n" "Panda hat\nHat Panda 53\n\n" \
- "Panda hat\nHat Panda 4\n\n" "Panda hat\nHat Panda 24\n\n" "Panda hat\nHat Panda 34\n\n" "Panda hat\nHat Panda 9000\n\n";
- // NOTE: This is 57 lines = 19 entries
-
+const unsigned char creditsText[] = RI_CREDITS_TEXT;
 
 void draw_win_screen(void) {
 
