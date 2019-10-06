@@ -32,5 +32,8 @@
         "custom": "More custom text goes here",
         "readonly": false,
         "required": false
+    },
+    {
+        "custom": "Thanks for playing!"
     }
 ]
