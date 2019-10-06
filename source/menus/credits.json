@@ -34,6 +34,9 @@
         "required": false
     },
     {
+        "isSpacer": true
+    },
+    {
         "custom": "Thanks for playing!"
     }
 ]
