@@ -145,10 +145,8 @@ void main(void) {
                 fade_in();
                 banked_call(PRG_BANK_MENU_INPUT_HELPERS, wait_for_start);
 
-                // Folow it up with the credits.
+                // Folow it up with the credits. (which have no input)
                 banked_call(PRG_BANK_CREDITS_MENU, draw_credits_screen);
-
-                banked_call(PRG_BANK_MENU_INPUT_HELPERS, do_credits_input);
 
                 fade_out();
 
