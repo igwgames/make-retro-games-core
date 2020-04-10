@@ -8,7 +8,7 @@
     #define RI_EDITOR_GAME_AUTHOR "YOU!"
     #define RI_GAME_AUTHOR_CONTACT "Tweet at us! @your_twitter"
     #define RI_GAME_YEAR "2019"
-    #define RI_DEBUG_MODE_BOOL 0
+    #define RI_DEBUG_MODE_BOOL 1
 // ----- END RETRO INTERACTIVE CODE REPLACEMENT ----- 
 
 extern const unsigned char gameName[];
