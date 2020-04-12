@@ -15,6 +15,9 @@
 //           Byte 6 is used for movement speed on enemies and npcs.
 //           Byte 7 is used for health on enemy sprites in our `add_sword` branch.
 // NOTE: This array cannot contain more than 64 sprites, or other logic will break.
+
+// ----- RETRO INTERACTIVE CODE REPLACEMENT -----
+// ----- Changes in this area are discouraged and may be lost! -----
 const unsigned char spriteDefinitions[] = {
     SPRITE_TYPE_HEALTH, 0xea, SPRITE_SIZE_8PX_8PX | SPRITE_PALETTE_2, SPRITE_ANIMATION_NONE, SPRITE_MOVEMENT_NONE, 1, 0x00, 0x00,
     SPRITE_TYPE_REGULAR_ENEMY, 0x40, SPRITE_SIZE_16PX_16PX | SPRITE_PALETTE_1, SPRITE_ANIMATION_FULL, SPRITE_MOVEMENT_RANDOM_WANDER, 0x01, 14, 0x01,
@@ -27,3 +30,4 @@ const unsigned char spriteDefinitions[] = {
     SPRITE_TYPE_ENDGAME, 0xe8, SPRITE_SIZE_16PX_16PX | SPRITE_PALETTE_1, SPRITE_ANIMATION_NONE, SPRITE_MOVEMENT_NONE, 0x00, 0x00, 0x00,
     SPRITE_TYPE_NPC, 0x00, SPRITE_SIZE_16PX_16PX | SPRITE_PALETTE_1, SPRITE_ANIMATION_NONE, SPRITE_MOVEMENT_NONE, 0x01, 14, 0x00
 };
+// ----- END RETRO INTERACTIVE CODE REPLACEMENT ----- 
