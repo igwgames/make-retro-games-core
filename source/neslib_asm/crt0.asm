@@ -416,10 +416,17 @@ sounds_data:
 		jsr _ppu_wait_nmi
 		lda #$1f
 		jsr _set_chr_bank_0
+		lda #$00
 		jsr _set_chr_bank_1
+		lda #1
+		jsr _bank_spr
 		lda #<(splash_pal)
 		ldx #>(splash_pal)
 		jsr _pal_bg
+		lda #<(splash_pal)
+		ldx #>(splash_pal)
+		jsr _pal_spr
+
 		lda #<($2000)
 		ldx #>($2000)
 		jsr _vram_adr
@@ -430,6 +437,61 @@ sounds_data:
 		lda #<(1024)
 		ldx #>(1024)
 		jsr _vram_write
+
+		lda #160
+		sta _tempChara
+		ldx #0
+		ldy #0
+		@loop_ver:
+			lda ENGINE_VERSION, x
+			cmp #0
+			beq @end_loop
+
+			lda #12
+			sta $200, y
+			iny
+			lda ENGINE_VERSION, x
+			cmp #46
+			bne @skip_dot
+				dey
+				lda #20
+				sta $200, y
+				iny
+				lda #$07 ; 10 less than the id, for math below
+			@skip_dot:
+
+			sec
+			sbc #$20
+			sta $200, y
+			iny
+			lda #0
+			sta $200, y
+			iny
+			dex
+			lda ENGINE_VERSION, x
+			inx
+			cmp #46
+			beq @period
+				; No Period; re-space
+				lda _tempChara
+				clc
+				adc #8
+				sta _tempChara
+
+				jmp @after_period
+			@period:
+				lda _tempChara
+				clc
+				adc #4
+				sta _tempChara
+
+			@after_period:
+			sta $200, y 
+			iny
+
+			inx
+			jmp @loop_ver
+		@end_loop:
 
 		lda #0
 		jsr _pal_bright
@@ -456,3 +518,4 @@ sounds_data:
 		.incbin "graphics/splash.pngE/nametable0.nam"
 	splash_pal:
 		.incbin "graphics/splash.pngE/palette_edit.pal"
+	.include "source/configuration/engine_version.asm"
