@@ -115,6 +115,10 @@ temp/%.s: temp/%.c
 
 temp/level_overworld.c: levels/overworld.tmx
 	$(TMX2C) 3 overworld $< $(patsubst %.c, %, $@)
+# NOTE: To support end users, need to generically name these files, or put the bank num in the name or something.
+# temp/level_%.c: levels/%.tmx WORKS, but doesn't pass the right name & bankid to below. If you can figure that...
+temp/level_underworld.c: levels/underworld.tmx
+	$(TMX2C) 4 underworld $< $(patsubst %.c, %, $@)
 
 graphics/generated/tiles.png: graphics/tiles.chr graphics/sprites.chr graphics/palettes/main_bg.pal
 	$(CHR2IMG) graphics/tiles.chr graphics/palettes/main_bg.pal graphics/generated/tiles.png

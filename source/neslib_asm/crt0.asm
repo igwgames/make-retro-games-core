@@ -10,7 +10,8 @@ FT_SFX_STREAMS			= 4			;number of sound effects played at once, 1..4
 .include "source/neslib_asm/mmc1_macros.asm"
 
     .export _exit,__STARTUP__:absolute=1
-	.import initlib,push0,popa,popax,_main,zerobss,copydata
+	.import initlib,push0,popa,popax,_main,zerobss,copydata,pusha,pushax,_fade_in,_fade_out_slow
+	.importzp _tempChar8, _tempChar9, _tempChara
 
 ; Linker generated symbols
 	.import __RAM_START__   ,__RAM_SIZE__
@@ -218,6 +219,14 @@ clearRAM:
 	lda #%00000110
 	sta <PPU_MASK_VAR
 
+	lda #<(_main)
+	clc
+	adc #120
+	sta _tempChar8
+	lda #>(_main)
+	sta _tempChar9
+
+
 waitSync3:
 	lda <FRAME_CNT1
 @1:
@@ -275,8 +284,16 @@ detectNTSC:
 	; If you're not the average engine user, hi! Welcome to the code behind the matrix ;)
 	jsr _unset_nmi_chr_tile_bank
 
-
-	jmp _main			;no parameters
+	lda #06
+	sta BP_BANK
+	mmc1_register_write MMC1_PRG
+	jsr _draw_splash
+	lda _tempChar8
+	sec
+	sbc _tempChara
+	sta _tempChar8
+	.byte $6c, <(_tempChar8), >(_tempChar8)
+	@continue:
 
 	.include "source/neslib_asm/ft_drv/driver.s"
     .include "source/library/bank_helpers.asm"
@@ -352,7 +369,7 @@ detectNTSC:
 .segment "CHR_1E"
 	.incbin "graphics/tiles.chr"
 .segment "CHR_1F"
-	.incbin "graphics/tiles.chr"
+	.incbin "graphics/splash.pngE/chrblock.chr"
 
 ; MMC1 needs a reset stub in every bank that will put us into a known state. This defines it for all banks.
 .repeat (SYS_PRG_BANKS-1), I
@@ -390,3 +407,52 @@ sounds_data:
 .if(FT_DPCM_ENABLE)
 	.incbin "sound/samples/samples.bin"
 .endif
+
+.segment "ROM_06"
+	_draw_splash:
+		
+		jsr _oam_clear
+		jsr _ppu_off
+		jsr _ppu_wait_nmi
+		lda #$1f
+		jsr _set_chr_bank_0
+		jsr _set_chr_bank_1
+		lda #<(splash_pal)
+		ldx #>(splash_pal)
+		jsr _pal_bg
+		lda #<($2000)
+		ldx #>($2000)
+		jsr _vram_adr
+
+		lda #<(splash_nam)
+		ldx #>(splash_nam)
+		jsr pushax
+		lda #<(1024)
+		ldx #>(1024)
+		jsr _vram_write
+
+		lda #0
+		jsr _pal_bright
+		jsr _ppu_wait_nmi
+		jsr _ppu_on_all
+		jsr _ppu_wait_nmi
+		jsr _fade_in
+		
+		lda #0 
+		sta _tempChara
+
+		_loop_time:
+			jsr _ppu_wait_nmi
+			inc _tempChara
+			lda _tempChara
+			cmp #120
+			bne _loop_time
+		
+		jsr _fade_out_slow
+
+		rts
+	
+	splash_nam:
+		.incbin "graphics/splash.pngE/nametable0.nam"
+	splash_pal:
+		.incbin "graphics/splash.pngE/palette_edit.pal"
