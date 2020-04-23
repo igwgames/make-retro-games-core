@@ -6,6 +6,5 @@ outputs:
     description: 'The time we greeted you'
 runs:
   using: 'docker'
-  image: 'Dockerfile'
-  args:
-    - ${{ inputs.who-to-greet }}
+  image: cppchriscpp/cc65-node:latest
+  entrypoint: "./build.sh"
