@@ -6,5 +6,5 @@ outputs:
     description: 'The time we greeted you'
 runs:
   using: 'docker'
-  image: cppchriscpp/cc65-node:latest
+  image: '../../Dockerfile
   entrypoint: "./build.sh"
