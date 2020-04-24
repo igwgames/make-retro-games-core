@@ -3,8 +3,7 @@
 cd /
 CI_BUILD=true make
 ls -lah /rom
-ls -lah /github
-ls -lah /github/workspace/rom
+ls -lah /github/home
 cp rom/* $GITHUB_WORKDSPACE
-sudo cp rom/starter.nes /github/workspace/rom
-ls -lah /github/workspace/rom
+cp rom/starter.nes /github/home/rom
+ls -lah /github/home/rom
