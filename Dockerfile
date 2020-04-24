@@ -2,6 +2,6 @@ FROM cppchriscpp/cc65-node:latest
 
 COPY . /
 COPY tools/github-action-build/build.sh /build.sh
-RUN ls -lah /
+RUN pwd
 
-ENTRYPOINT ["/build.sh"]
+ENTRYPOINT ["sh", "/build.sh"]
