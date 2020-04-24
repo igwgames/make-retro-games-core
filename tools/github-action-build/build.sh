@@ -6,5 +6,5 @@ ls -lah /rom
 ls -lah /github
 ls -lah /github/workspace/rom
 cp rom/* $GITHUB_WORKDSPACE
-cp rom/starter.nes /github/workspace/rom
+sudo cp rom/starter.nes /github/workspace/rom
 ls -lah /github/workspace/rom
