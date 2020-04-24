@@ -1,9 +1,6 @@
 #Compile game action
 name: 'CC65 NES Compilation'
 description: 'Compiles an NES game to a rom'
-outputs:
-  time: # id of output
-    description: 'The time we greeted you'
 runs:
   using: 'docker'
   image: '../../Dockerfile'

@@ -13,7 +13,7 @@ jobs:
       - name: Upload artifacts
         uses: actions/upload-artifact@v1
         with:
-          name: rom
-          path: rom
+          name: /rom/starter.nes
+          path: /rom/starter.nes
           
     
