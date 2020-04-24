@@ -67,9 +67,9 @@ CONFIG_ASM=$(CONFIG_FILE_PATH)_constants.asm
 # ===== Actual makefile logic starts here =====
 # You really shouldn't need to edit anything below this line if you're not doing advanced stuff.
 
-# Tweak a bunch of stuff to use circleci settings
+# Tweak a bunch of stuff to use special settings
 # These might get you running in a limited fashion on non-windows systems too...
-ifdef CIRCLECI
+ifdef CI_BUILD
 	# SFX and music are committed to git, so we don't use these tools. They're sadly windows-only anyway...
 	SFX_CONVERTER=echo -q
 	AFTER_SFX_CONVERTER=echo Skipping SFX Generation...

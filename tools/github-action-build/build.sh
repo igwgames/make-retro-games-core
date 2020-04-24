@@ -5,4 +5,4 @@ cd tools/tmx2c/src && npm install && cd ../../../tools/sprite_def2img/src && npm
 
 cd /
 ls -lah
-make
+CI_BUILD=true make
