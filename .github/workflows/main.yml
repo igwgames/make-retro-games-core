@@ -14,6 +14,6 @@ jobs:
         uses: actions/upload-artifact@v1
         with:
           name: game.nes
-          path: /github/home/retro-interactive-demo1/rom/starter.nes
+          path: /github/workspace/starter.nes
           
     
