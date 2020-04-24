@@ -7,4 +7,3 @@ outputs:
 runs:
   using: 'docker'
   image: '../../Dockerfile'
-  entrypoint: "./build.sh"
