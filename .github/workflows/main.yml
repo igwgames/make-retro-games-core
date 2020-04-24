@@ -14,6 +14,6 @@ jobs:
         uses: actions/upload-artifact@v1
         with:
           name: game.nes
-          path: ${{ env.home }}/rom/starter.nes
+          path: ${{ env.HOME }}/rom/starter.nes
           
     
