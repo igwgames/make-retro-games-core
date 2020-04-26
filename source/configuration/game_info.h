@@ -4,7 +4,7 @@
 
 // ----- RETRO INTERACTIVE CODE REPLACEMENT -----
 // ----- Changes in this area are discouraged and may be lost! -----
-    #define RI_EDITOR_GAME_NAME "RI Demo Game 2"
+    #define RI_EDITOR_GAME_NAME "RI Demo Game"
     #define RI_EDITOR_GAME_AUTHOR "YOU!"
     #define RI_GAME_AUTHOR_CONTACT "Tweet at us! @your_twitter"
     #define RI_GAME_YEAR "2019"
