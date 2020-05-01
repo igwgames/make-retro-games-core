@@ -102,9 +102,9 @@ void update_map_sprites(void) {
                 // This is for sprites that can face up/down/left/right, and are animated while they do so.
                 currentSpriteData = currentMapSpriteData[currentMapSpriteIndex + MAP_SPRITE_DATA_POS_CURRENT_DIRECTION];
                 if (currentSpriteData == SPRITE_DIRECTION_LEFT) {
-                    currentSpriteTileId += currentSpriteSize == SPRITE_SIZE_16PX_16PX ? 0x24 : 0x12;
+                    currentSpriteTileId += currentSpriteSize == SPRITE_SIZE_16PX_16PX ? 0x0c : 0x12;
                 } else if (currentSpriteData == SPRITE_DIRECTION_RIGHT) {
-                    currentSpriteTileId += currentSpriteSize == SPRITE_SIZE_16PX_16PX ? 0x20 : 0x10;
+                    currentSpriteTileId += currentSpriteSize == SPRITE_SIZE_16PX_16PX ? 0x08 : 0x10;
                 } else if (currentSpriteData == SPRITE_DIRECTION_UP) {
                     currentSpriteTileId += currentSpriteSize == SPRITE_SIZE_16PX_16PX ? 0x04 : 0x02;
                 } // Else, you're facing down, which conveniently is in position zero. So, do nothing!
