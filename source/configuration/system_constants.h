@@ -14,7 +14,7 @@
 
 #define CHR_BANK_MENU 0
 #define CHR_BANK_TILES 1
-#define CHR_BANK_SPRITES 2
+#define CHR_BANK_SPRITES 0x10
 
 #define HUD_TILE_SIZE 192
 #define HUD_PIXEL_HEIGHT 48
