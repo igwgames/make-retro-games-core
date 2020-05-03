@@ -344,7 +344,7 @@ detectNTSC:
 	.incbin "graphics/sprites_other.chr"
 .segment "CHR_11"
 	.incbin "graphics/sprites_player.chr"
-	.incbin "graphics/sprites_npc_1.chr"
+	.incbin "graphics/sprites_npc_2.chr"
 	.incbin "graphics/sprites_other.chr"
 .segment "CHR_12"
 	.incbin "graphics/sprites_player.chr"

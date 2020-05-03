@@ -4,13 +4,17 @@
         "name": "First Map",
         "tilesetId": "0",
         "spritesetId": "0",
-        "tmxFile": "levels/overworld.tmx"
+        "tmxFile": "levels/overworld.tmx",
+        "metaFile": "levels/level_overworld_meta.h",
+        "bankNum": 3
     },
     {
         "id": "1",
         "name": "Second Map",
         "tilesetId": "0",
         "spritesetId": "0",
-        "tmxFile": "levels/underworld.tmx"
+        "tmxFile": "levels/underworld.tmx",
+        "metaFile": "levels/level_underworld_meta.h",
+        "bankNum": 4
     }
 ]

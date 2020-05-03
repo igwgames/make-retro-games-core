@@ -88,6 +88,7 @@ void do_scroll_screen_transition(void);
 
 // Take the value of playerOverworldPosition, and transition onto that screen with a fade animation.
 void do_fade_screen_transition(void);
+void load_tile_specifics(void);
 
 // Defines world ids we use, which are also PRG bank ids to save storage and simplify code.
 #define WORLD_OVERWORLD PRG_BANK_MAP_OVERWORLD

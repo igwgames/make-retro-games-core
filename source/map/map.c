@@ -13,6 +13,17 @@
 #include "source/sprites/map_sprites.h"
 #include "source/menus/error.h"
 
+// TODO: These probably could move to a map area, just keep one?
+#include "levels/level_overworld_meta.h"
+#include "levels/level_underworld_meta.h"
+
+// This method needs access to stuff in another bank, so it's in the kernel bank
+void set_tempChar6_to_sprite_group(void) {
+    bank_push(currentWorldId);
+    tempChar6 = level_overworld_spritegroups[playerOverworldPosition];
+    bank_pop();
+}
+
 CODE_BANK(PRG_BANK_MAP_LOGIC);
 
 ZEROPAGE_DEF(unsigned char, playerOverworldPosition);
@@ -29,15 +40,16 @@ unsigned char currentMapSpritePersistance[64];
 
 unsigned char mapScreenBuffer[0x55];
 
-
+#define currentValue tempInt1
 void init_map(void) {
     // Make sure we're looking at the right sprite and chr data, not the ones for the menu.
     set_chr_bank_0(CHR_BANK_TILES);
-    set_chr_bank_1(CHR_BANK_SPRITES);
 
     // Also set the palettes to the in-game palettes.
     pal_bg(mainBgPalette);
     pal_spr(mainSpritePalette);
+
+    load_tile_specifics();
 
     // Do some trickery to make the HUD show up at the top of the screen, with the map slightly below.
     scroll(0, 240-HUD_PIXEL_HEIGHT);
@@ -45,14 +57,30 @@ void init_map(void) {
 }
 
 // Reusing a few temporary vars for the sprite function below.
-#define currentValue tempInt1
 #define spritePosition tempChar4
 #define spriteDefinitionIndex tempChar5
 #define mapSpriteDataIndex tempChar6
 #define tempArrayIndex tempInt3
 
+void load_tile_specifics(void) {
+    // Swap to the right chr bank...
+    // First get sprite group id from the map meta
+    set_tempChar6_to_sprite_group();
+    currentValue = tempChar6 << 4; // Now is an index off spriteDefinitionGroups
+    tempChar6 = spriteDefinitionGroups[currentValue + 0];
+    set_chr_bank_1(tempChar6);
+    for (i = 0; i != 8; ++i) {
+        mapScreenBuffer[i] = mainSpritePalette[i];
+    }
+    for (; i != 16; ++i) {
+        mapScreenBuffer[i] = spriteDefinitionGroups[currentValue + i]; // Offset on spriteDefinitionGroups is 8, we're offset by 8.. it works out!
+    }
+
+    pal_spr(mapScreenBuffer);
+}
+
 // Load the sprites from the current map
-void load_sprites(void) {
+void load_sprites(void) {    
     for (i = 0; i != MAP_MAX_SPRITES; ++i) {
         // Each sprite has just 2 bytes stored. The first is the location, and the 2nd is the sprite id in spriteDefinitions.
         spriteDefinitionIndex = currentMap[(MAP_DATA_TILE_LENGTH + 1) + (i<<1)]<<SPRITE_DEF_SHIFT;
@@ -518,6 +546,7 @@ void do_fade_screen_transition(void) {
     
     // Update sprites once to make sure we don't show a flash of the old sprite positions.
     banked_call(PRG_BANK_MAP_SPRITES, update_map_sprites);
+    load_tile_specifics();
     fade_in_fast();
     // Aand we're back!
     gameState = GAME_STATE_RUNNING;
@@ -552,6 +581,7 @@ void do_scroll_screen_transition(void) {
         clear_asset_table(1);
         load_sprites();
         draw_current_map_to_nametable(NAMETABLE_A, NAMETABLE_A_ATTRS, 0);
+        load_tile_specifics();
 
     } else if (playerDirection == SPRITE_DIRECTION_LEFT) {
         load_map();
@@ -566,6 +596,7 @@ void do_scroll_screen_transition(void) {
                 split(512-i, 0);
             }
         }
+        load_tile_specifics();
         xScrollPosition = 256;
         // Now, draw back to our original nametable...
         clear_asset_table(1);
@@ -610,6 +641,8 @@ void do_scroll_screen_transition(void) {
         load_sprites();
         ppu_wait_nmi();
         split_y(256, 240 + HUD_PIXEL_HEIGHT + otherLoopIndex);
+
+        load_tile_specifics();
         draw_current_map_to_nametable(NAMETABLE_A, NAMETABLE_A_ATTRS, 0);
 
     } else if (playerDirection == SPRITE_DIRECTION_UP) {
@@ -687,6 +720,9 @@ void do_scroll_screen_transition(void) {
         scroll(0, 240 - HUD_PIXEL_HEIGHT);
         xScrollPosition = 0;
         yScrollPosition = 0;
+
+        load_tile_specifics();
+        scroll(0, 240 - HUD_PIXEL_HEIGHT);
 
         // Redraw to B to work around a bug that manifests itself if we scroll
         // up a second time, since we expect this to have been drawn to B in its normal location.
