@@ -26,9 +26,10 @@ SFX_CONVERTER=tools/neslib_famitracker/tools/nsf2data
 AFTER_SFX_CONVERTER=mv sound/sfx/sfx.s sound/sfx/generated/sfx.s
 
 # Built-in tools: 
-CHR2IMG=tools/chr2img/chr2img
-TMX2C=tools/tmx2c/tmx2c
-SPRITE_DEF2IMG=tools/sprite_def2img/sprite_def2img
+CHR2IMG=node tools/chr2img/src/index.js
+TMX2C=node tools/tmx2c/src/index.js
+SPRITE_DEF2IMG=node tools/sprite_def2img/src/index.js
+TILE_META_GENERATOR=node tools/tile_meta_generator/src/index.js
 
 # Javascript versions of built-in tools: (Uncomment these if you're working on the tools)
 # CHR2IMG=node tools/chr2img/src/index.js
@@ -73,11 +74,6 @@ ifdef CI_BUILD
 	# SFX and music are committed to git, so we don't use these tools. They're sadly windows-only anyway...
 	SFX_CONVERTER=echo -q
 	AFTER_SFX_CONVERTER=echo Skipping SFX Generation...
-	# We don't have our nice toolkit here, so we have to use node directly
-	CHR2IMG=node tools/chr2img/src/index.js
-	TMX2C=node tools/tmx2c/src/index.js
-	SPRITE_DEF2IMG=node tools/sprite_def2img/src/index.js
-
 endif
 
 # Cancelling a couple implicit rules that confuse us greatly
@@ -98,7 +94,7 @@ temp/base.asm: $(CONFIG_ASM)
 	echo ".include \"$(CONFIG_ASM)\"" > temp/base.asm
 	echo ".include \"source/neslib_asm/crt0.asm\"" >> temp/base.asm
 
-temp/crt0.o: source/neslib_asm/crt0.asm source/neslib_asm/neslib.asm temp/base.asm $(SOURCE_CRT0_GRAPHICS) sound/music/music.bin sound/music/samples.bin sound/sfx/generated/sfx.s
+temp/crt0.o: source/neslib_asm/crt0.asm source/neslib_asm/neslib.asm temp/base.asm temp/chr_data.asm $(SOURCE_CRT0_GRAPHICS) sound/music/music.bin sound/music/samples.bin sound/sfx/generated/sfx.s
 	$(MAIN_ASM_COMPILER) temp/base.asm -o temp/crt0.o -D SOUND_BANK=$(SOUND_BANK)
 
 # This bit is a little cheap... any time a header file changes, just recompile all C files. There might
@@ -112,6 +108,9 @@ temp/%.o: temp/%.s
 
 temp/%.s: temp/%.c
 	$(MAIN_COMPILER) -Oi $< --add-source --include-dir ./tools/cc65/include -o $(patsubst %.o, %.s, $@)
+
+temp/chr_data.asm: graphics/graphics.json
+	$(TILE_META_GENERATOR)
 
 temp/level_overworld.c: levels/overworld.tmx
 	$(TMX2C) 3 overworld $< $(patsubst %.c, %, $@)
