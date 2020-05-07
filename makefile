@@ -109,7 +109,7 @@ temp/%.o: temp/%.s
 temp/%.s: temp/%.c
 	$(MAIN_COMPILER) -Oi $< --add-source --include-dir ./tools/cc65/include -o $(patsubst %.o, %.s, $@)
 
-temp/chr_data.asm: graphics/graphics.json
+temp/chr_data.asm: graphics/graphics.json graphics/sprites.json
 	$(TILE_META_GENERATOR)
 
 temp/level_overworld.c: levels/overworld.tmx

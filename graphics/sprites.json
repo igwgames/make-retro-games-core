@@ -1,0 +1,26 @@
+[
+    {
+        "id": "0",
+        "name": "First Sprites",
+        "authorInfo": {
+            "name": "Stinky Petersen",
+            "url": "http://opengameart.com/blah/",
+            "license": "MIT"
+        },
+        "chrFile": "graphics/sprites_npc_1.chr",
+        "type": "sprite",
+        "paletteFile": "graphics/palettes/main_spr.pal"
+    },
+    {
+        "id": "1",
+        "name": "Dummy Sprites",
+        "authorInfo": {
+            "name": "Stinky Petersen 2",
+            "url": "http://opengameart.com/blah/",
+            "license": "MIT"
+        },
+        "chrFile": "graphics/sprites_npc_2.chr",
+        "type": "sprite",
+        "paletteFile": "graphics/palettes/error.pal"
+    }
+]
