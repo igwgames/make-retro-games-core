@@ -15,6 +15,23 @@ const PRG_BANK_MAP_SPRITES = '02',
 const graphicsData = require('../../../graphics/graphics.json'),
 	spriteData = require('../../../graphics/sprites.json');
 
+graphicsData.forEach(function(spr) { 
+	// Go through each sprite file and pack all of the info in collisionMap, 2 values per byte.
+	// index becomes i >> 2, value becomes i%2==0?i&0b00001111:0b11110000>>4
+	let packedSprites = [];
+	let currentVal = 0;
+	spr.collisionMap.forEach(function(val, idx) {
+		if (idx % 2 === 0) {
+			currentVal += val;
+		} else {
+			currentVal += (val << 4);
+			packedSprites.push(currentVal);
+			currentVal = 0;
+		}
+	});
+	spr.packedCollisionMap = packedSprites;
+});
+
 let modifiedGraphicsData = [];
 let i = 0;
 for (; i != MAX_TILES; i++) {
@@ -83,8 +100,8 @@ for (i = 0; i != modifiedGraphicsData.length; i++) {
 `;
 
 		// This isn't pretty, but it's a generated; meh...
-		for (var j = 0; j != modifiedGraphicsData[i].collisionMap.length; j++) {
-			collisionData += '    .byte ' + modifiedGraphicsData[i].collisionMap[j] + '\n';
+		for (var j = 0; j != modifiedGraphicsData[i].packedCollisionMap.length; j++) {
+			collisionData += '    .byte ' + modifiedGraphicsData[i].packedCollisionMap[j] + '\n';
 		}
 
 		collisionData += '\n\n\n';
