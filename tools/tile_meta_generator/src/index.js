@@ -6,13 +6,14 @@ const fs = require('fs');
 const PRG_BANK_MAP_SPRITES = '02',
 	TILE_START = 0,
 	MAX_TILES = 10,
-	SPRITE_START = 10, 
+	SPRITE_START = 0x10, 
 	MAX_SPRITES = 10,
 	MAX_CHR = 32,
 	SPLASH_CHR = 31,
 	MENU_CHR = 0x0a;
 
-const graphicsData = require('../../../graphics/graphics.json');
+const graphicsData = require('../../../graphics/graphics.json'),
+	spriteData = require('../../../graphics/sprites.json');
 
 let modifiedGraphicsData = [];
 let i = 0;
@@ -31,13 +32,17 @@ for (; i != SPRITE_START; i++) {
 
 // Now fill in up to sprites
 for (; i != (SPRITE_START + MAX_SPRITES); i++) {
-	// FIXME: Fill this in with sprite data when we have it. Follow same pattern as above.
-	modifiedGraphicsData.push(graphicsData[0]);
+	if (spriteData[i]) {
+		modifiedGraphicsData.push(spriteData[i]);
+	} else {
+		modifiedGraphicsData.push(spriteData[0]);
+	}
+
 }
 
 // Fill in the rest of the sprites with "something"
 for (; i != MAX_CHR; i++) {
-	modifiedGraphicsData.push(graphicsData[0]);
+	modifiedGraphicsData.push(spriteData[0]);
 }
 
 modifiedGraphicsData[SPLASH_CHR] = {
@@ -62,7 +67,9 @@ let chrData = '',
 for (i = 0; i != modifiedGraphicsData.length; i++) {
 	chrData += `
 		.segment "CHR_${(''+(i).toString(16)).padStart(2, '0').toUpperCase()}"
+			${modifiedGraphicsData[i].type === 'sprite' ? `.incbin "graphics/sprites_player.chr"` : ''}
 			.incbin "${modifiedGraphicsData[i].chrFile}"
+			${modifiedGraphicsData[i].type === 'sprite' ? `.incbin "graphics/sprites_other.chr"` : ''}
 	`;
 
 	if (i >= TILE_START && i < MAX_TILES) {
