@@ -347,7 +347,7 @@ sounds_data:
 		jsr _ppu_wait_nmi
 		lda #$1f
 		jsr _set_chr_bank_0
-		lda #$00
+		lda #$01
 		jsr _set_chr_bank_1
 		lda #1
 		jsr _bank_spr
