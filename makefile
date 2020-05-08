@@ -30,6 +30,7 @@ CHR2IMG=node tools/chr2img/src/index.js
 TMX2C=node tools/tmx2c/src/index.js
 SPRITE_DEF2IMG=node tools/sprite_def2img/src/index.js
 TILE_META_GENERATOR=node tools/tile_meta_generator/src/index.js
+MAP_PARSER=node tools/map_parser/src/index.js
 
 # Javascript versions of built-in tools: (Uncomment these if you're working on the tools)
 # CHR2IMG=node tools/chr2img/src/index.js
@@ -38,8 +39,7 @@ TILE_META_GENERATOR=node tools/tile_meta_generator/src/index.js
 
 SOUND_BANK=0
 
-SOURCE_LEVELS_TMX=$(strip $(call rwildcard, levels/, *.tmx))
-SOURCE_LEVELS_C=$(subst levels/, temp/level_, $(patsubst %.tmx, %.c, $(SOURCE_LEVELS_TMX)))
+SOURCE_LEVELS_C=temp/map__0.c temp/map__1.c temp/map__2.c temp/map__2.c temp/map__3.c temp/map__4.c temp/map__5.c
 
 SOURCE_C=$(SOURCE_LEVELS_C) $(strip $(call rwildcard, source/, *.c))
 SOURCE_S=$(patsubst source/, temp/, $(patsubst %.c, %.s, $(SOURCE_C)))
@@ -112,13 +112,8 @@ temp/%.s: temp/%.c
 temp/chr_data.asm: graphics/graphics.json graphics/sprites.json
 	$(TILE_META_GENERATOR)
 
-temp/level_overworld.c: levels/overworld.tmx
-	$(TMX2C) 3 overworld $< $(patsubst %.c, %, $@)
-# NOTE: To support end users, need to generically name these files, or put the bank num in the name or something.
-# temp/level_%.c: levels/%.tmx WORKS, but doesn't pass the right name & bankid to below. If you can figure that...
-temp/level_underworld.c: levels/underworld.tmx
-	$(TMX2C) 4 underworld $< $(patsubst %.c, %, $@)
-
+temp/map__%.c: levels/levels.json levels/*.tmx
+	$(MAP_PARSER)
 graphics/generated/tiles.png: graphics/tiles.chr graphics/sprites.chr graphics/palettes/main_bg.pal
 	$(CHR2IMG) graphics/tiles.chr graphics/palettes/main_bg.pal graphics/generated/tiles.png
 

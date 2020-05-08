@@ -5,8 +5,7 @@
         "tilesetId": "0",
         "spritesetId": "0",
         "tmxFile": "levels/overworld.tmx",
-        "metaFile": "levels/level_overworld_meta.h",
-        "bankNum": 3
+        "metaFile": "levels/level_overworld_meta.h"
     },
     {
         "id": "1",
@@ -14,7 +13,6 @@
         "tilesetId": "0",
         "spritesetId": "0",
         "tmxFile": "levels/underworld.tmx",
-        "metaFile": "levels/level_underworld_meta.h",
-        "bankNum": 4
+        "metaFile": "levels/level_underworld_meta.h"
     }
 ]

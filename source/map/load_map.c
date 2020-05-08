@@ -11,7 +11,7 @@ void load_map(void) {
     
     // Need to switch to the bank that stores this map data.
     bank_push(currentWorldId);
-    memcpy(currentMap, overworld + (playerOverworldPosition << 8), 256);
+    memcpy(currentMap, map_0 + (playerOverworldPosition << 8), 256);
     bank_pop();
 
 }
