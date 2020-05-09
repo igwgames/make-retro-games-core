@@ -2,16 +2,16 @@
     {
         "id": "84c591e6-7d2b-450e-b622-23e2e81ad268",
         "name": "First Map",
-        "tilesetId": "0",
-        "spritesetId": "0",
+        "tilesetId": "eed22960-e46c-421e-b148-46f0d2a3486b",
+        "spritesetId": "8ca72e8e-3d13-4a8f-99ec-37905e3a44a0",
         "tmxFile": "levels/overworld.tmx",
         "metaFile": "levels/level_overworld_meta.h"
     },
     {
         "id": "baf32c37-b3e5-4530-bdb3-79665e77d430",
         "name": "Second Map",
-        "tilesetId": "0",
-        "spritesetId": "0",
+        "tilesetId": "4bc74299-3a3a-46a6-a1b5-7a400442386f",
+        "spritesetId": "1796b720-cf8d-4eab-9e77-eb65ff4ad679",
         "tmxFile": "levels/underworld.tmx",
         "metaFile": "levels/level_underworld_meta.h"
     }
