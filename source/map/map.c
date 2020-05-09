@@ -13,14 +13,18 @@
 #include "source/sprites/map_sprites.h"
 #include "source/menus/error.h"
 
-// TODO: These probably could move to a map area, just keep one?
-#include "levels/level_overworld_meta.h"
-#include "levels/level_underworld_meta.h"
+// Rest of the files exist, but we really only need 0. Rest should be identical because banks are laid out the same.
+#include "temp/sprite_groups.h"
 
 // This method needs access to stuff in another bank, so it's in the kernel bank
 void set_tempChar6_to_sprite_group(void) {
     bank_push(currentWorldId);
-    tempChar6 = level_overworld_spritegroups[playerOverworldPosition];
+    tempChar6 = map_0_spritegroups[playerOverworldPosition];
+    bank_pop();
+}
+void set_tempChar6_to_chr_bank(void) {
+    bank_push(currentWorldId);
+    tempChar6 = map_0_chr_bank_id;
     bank_pop();
 }
 
@@ -43,7 +47,8 @@ unsigned char mapScreenBuffer[0x55];
 #define currentValue tempInt1
 void init_map(void) {
     // Make sure we're looking at the right sprite and chr data, not the ones for the menu.
-    set_chr_bank_0(CHR_BANK_TILES);
+    set_tempChar6_to_chr_bank();
+    set_chr_bank_0(tempChar6);
 
     // Also set the palettes to the in-game palettes.
     pal_bg(mainBgPalette);

@@ -42,11 +42,4 @@ const unsigned char spriteDefinitions[] = {
     SPRITE_TYPE_NPC, 0x00, SPRITE_SIZE_16PX_16PX | SPRITE_PALETTE_3, SPRITE_ANIMATION_NONE, SPRITE_MOVEMENT_NONE, 0x01, 14, 0x00
 };
 
-const unsigned char spriteDefinitionGroups[] = {
-    0x10, 0, 0, 0, 0, 0, 0, 0,        0x0f, 0x01, 0x21, 0x31, 0x0f, 0x06, 0x16, 0x26,
-
-    0x11, 0, 0, 0, 0, 0, 0, 0,        0x0f, 0x09, 0x19, 0x29, 0x0f, 0x19, 0x29, 0x39
-};
-
-
 // ----- END RETRO INTERACTIVE CODE REPLACEMENT ----- 

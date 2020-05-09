@@ -68,4 +68,3 @@
 #define SPRITE_DEF_POSITION_DAMAGE          7
 
 extern const unsigned char spriteDefinitions[];
-extern const unsigned char spriteDefinitionGroups[];

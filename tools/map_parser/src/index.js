@@ -6,9 +6,13 @@ const fs = require('fs'),
 // NOTE: This bank needs to line up with the rest of the game!
 // The sprite collision stuff can't afford to be constantly swapping.
 const MAX_MAPS = 6,
-    FIRST_MAP = 0x08;
+    FIRST_MAP = 0x08,
+    FIRST_SPRITE_CHR_BANK = 0x10;
 
 const levelData = require('../../../levels/levels.json'),
+    graphicsData = require('../../../graphics/graphics.json'),
+    spritesData = require('../../../graphics/sprites.json'),
+    spriteDataIds = spritesData.map(sprite => { return sprite.id }),
     updatedLevelData = [],
 	promises = [];
 
@@ -31,12 +35,77 @@ updatedLevelData.forEach(function(level, val) {
                 return
             }
 
+            const tileIndex = graphicsData.map(graphic => { return graphic.id; }).indexOf(level.tilesetId);
+            if (tileIndex === -1) {
+                reject('Tileset for map "' + level.name + '" not found!');
+                return;
+            }
+            let spriteIndexes = []
+            level.spritesetIds.forEach(spriteset => { 
+                spriteIndexes.push(spriteDataIds.indexOf(spriteset));
+            });
+            if (spriteIndexes.filter(a => { return a === -1 }).length > 0) {
+                reject('Some sprite groups referenced in "' + level.name + '" were not found in the list of availabe spritesets.');
+                return;
+            }
+            
+            const metaContent = `
+
+#include "source/library/bank_helpers.h"
+CODE_BANK(${(FIRST_MAP + val).toString(16).toUpperCase()});
+
+const unsigned char map_${val}_spritegroups[] = {
+    ${spriteIndexes.join(',\n    ')}
+};
+
+const unsigned char map_${val}_chr_bank_id = ${tileIndex};
+CODE_BANK_POP();
+            `;
+
+            fs.writeFileSync('temp/map_'+val+'_meta.c', metaContent);
+
             resolve();
         });
+
+
     }));
 });
 
 (async function() {
-    await Promise.all(promises);
+    try { 
+        await Promise.all(promises);
+    } catch (e) {
+        console.error('FAILED MAP CONVERSION', e);
+        process.exit(1);
+    }
     console.info('Done converting ' + updatedLevelData.length + ' files!');
 })();
+
+let spriteGroupData = [];
+spritesData.forEach((sprite, idx) => {
+    let thisOne = []
+    thisOne.push(FIRST_SPRITE_CHR_BANK + idx);
+    for (var i = 0; i != 7; i++) {
+        thisOne.push(0);
+    }
+    let dataBuff = fs.readFileSync(sprite.paletteFile);
+    for (var i = 0; i != 8; i++) {
+        thisOne.push(dataBuff[i]);
+    }
+    spriteGroupData.push(thisOne.join(', '));
+});
+
+const outputData = `
+const unsigned char spriteDefinitionGroups[] = {
+    ${spriteGroupData.join(',\n')}
+};
+`
+
+const outputH = `
+extern const unsigned char spriteDefinitionGroups[]; 
+extern const unsigned char map_0_chr_bank_id;
+extern const unsigned char map_0_spritegroups[];
+`
+
+fs.writeFileSync('temp/sprite_groups.c', outputData);
+fs.writeFileSync('temp/sprite_groups.h', outputH);
