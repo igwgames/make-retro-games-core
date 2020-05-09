@@ -102,6 +102,8 @@ const unsigned char spriteDefinitionGroups[] = {
 `
 
 const outputH = `
+#define FIRST_TILESET_BANK_ID ${FIRST_SPRITE_CHR_BANK}
+
 extern const unsigned char spriteDefinitionGroups[]; 
 extern const unsigned char map_0_chr_bank_id;
 extern const unsigned char map_0_spritegroups[];

@@ -48,6 +48,7 @@ unsigned char mapScreenBuffer[0x55];
 void init_map(void) {
     // Make sure we're looking at the right sprite and chr data, not the ones for the menu.
     set_tempChar6_to_chr_bank();
+    currentMapTilesetId = tempChar6;
     set_chr_bank_0(tempChar6);
 
     // Also set the palettes to the in-game palettes.
