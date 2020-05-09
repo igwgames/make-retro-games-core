@@ -1,6 +1,6 @@
 [
     {
-        "id": "0",
+        "id": "eed22960-e46c-421e-b148-46f0d2a3486b",
         "name": "First Tiles",
         "authorInfo": {
             "name": "Stinky Petersen",
@@ -270,7 +270,7 @@
         "paletteFile": "graphics/palettes/main_bg.pal"
     },
     {
-        "id": "1",
+        "id": "4bc74299-3a3a-46a6-a1b5-7a400442386f",
         "name": "Dummy Tiles",
         "authorInfo": {
             "name": "Stinky Petersen 2",

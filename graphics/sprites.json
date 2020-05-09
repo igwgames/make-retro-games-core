@@ -1,6 +1,6 @@
 [
     {
-        "id": "0",
+        "id": "8ca72e8e-3d13-4a8f-99ec-37905e3a44a0",
         "name": "First Sprites",
         "authorInfo": {
             "name": "Stinky Petersen",
@@ -12,7 +12,7 @@
         "paletteFile": "graphics/palettes/main_spr.pal"
     },
     {
-        "id": "1",
+        "id": "1796b720-cf8d-4eab-9e77-eb65ff4ad679",
         "name": "Dummy Sprites",
         "authorInfo": {
             "name": "Stinky Petersen 2",

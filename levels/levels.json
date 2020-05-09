@@ -1,6 +1,6 @@
 [
     {
-        "id": "0",
+        "id": "84c591e6-7d2b-450e-b622-23e2e81ad268",
         "name": "First Map",
         "tilesetId": "0",
         "spritesetId": "0",
@@ -8,7 +8,7 @@
         "metaFile": "levels/level_overworld_meta.h"
     },
     {
-        "id": "1",
+        "id": "baf32c37-b3e5-4530-bdb3-79665e77d430",
         "name": "Second Map",
         "tilesetId": "0",
         "spritesetId": "0",
