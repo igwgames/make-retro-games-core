@@ -538,19 +538,5 @@
             0
         ],
         "paletteFile": "graphics/palettes/error.pal"
-    },
-    {
-        "id": "bdebf41c-12e8-4cf1-984d-0c810af2956e",
-        "originalId": "zoria-overworld-tiles",
-        "originalParentId": null,
-        "name": "Zoria Overworld Tiles",
-        "authorInfo": {
-            "name": "Unknown",
-            "url": null,
-            "license": "Unknown",
-            "licenseUrl": null
-        },
-        "chrFile": "graphics/bdebf41c-12e8-4cf1-984d-0c810af2956e.chr",
-        "paletteFile": "graphics/bdebf41c-12e8-4cf1-984d-0c810af2956e.pal"
     }
 ]
