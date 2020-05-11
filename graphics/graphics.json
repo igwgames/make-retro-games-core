@@ -543,7 +543,8 @@
         "id": "49ffda05-2304-48e2-a081-f278fb705024",
         "originalId": "zoria-overworld-tiles",
         "originalParentId": null,
-        "name": "Zoria Overworld Tiles",
+		"name": "Zoria Overworld Tiles",
+		"type": "tile",
         "authorInfo": {
             "name": "Unknown",
             "url": null,

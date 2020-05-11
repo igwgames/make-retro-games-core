@@ -36,15 +36,23 @@ let modifiedGraphicsData = [];
 let i = 0;
 for (; i != MAX_TILES; i++) {
 	if (graphicsData[i]) {
-		modifiedGraphicsData.push(graphicsData[i]);
+		const data = fs.readFileSync(graphicsData[i].chrFile),
+			path = graphicsData[i].chrFile.replace('graphics', 'temp'),
+			choppedData = data.slice(0, 4096 - 512); // Chop off hud bits
+		fs.writeFileSync(path, choppedData);
+		const tweakedCfg = JSON.parse(JSON.stringify(graphicsData[i]));
+		tweakedCfg.chrFile = path;
+		modifiedGraphicsData.push(tweakedCfg);
 	} else {
-		modifiedGraphicsData.push(graphicsData[0]);
+		const tweakedCfg = JSON.parse(JSON.stringify(graphicsData[0]));
+		tweakedCfg.chrFile = graphicsData[0].chrFile.replace('graphics', 'temp');
+		modifiedGraphicsData.push(tweakedCfg);
 	}
 }
 
 // Fill in extra slots with "something" - just use first tiles for now.
 for (; i != SPRITE_START; i++) {
-	modifiedGraphicsData.push(graphicsData[0]);
+	modifiedGraphicsData.push(modifiedGraphicsData[0]);
 }
 
 // Now fill in up to sprites
@@ -87,6 +95,7 @@ for (i = 0; i != modifiedGraphicsData.length; i++) {
 			${modifiedGraphicsData[i].type === 'sprite' ? `.incbin "graphics/sprites_player.chr"` : ''}
 			.incbin "${modifiedGraphicsData[i].chrFile}"
 			${modifiedGraphicsData[i].type === 'sprite' ? `.incbin "graphics/sprites_other.chr"` : ''}
+			${modifiedGraphicsData[i].type === 'tile' ? '.incbin "graphics/hud.chr"' : ''}
 	`;
 
 	if (i >= TILE_START && i < MAX_TILES) {
