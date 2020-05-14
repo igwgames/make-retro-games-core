@@ -12,7 +12,7 @@
         "required": true
     },
     {
-        "who": "You!!",
+        "who": "You!",
         "what": "Game Creation",
         "readonly": false,
         "required": false
