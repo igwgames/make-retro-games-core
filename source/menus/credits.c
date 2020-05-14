@@ -11,7 +11,7 @@ CODE_BANK(PRG_BANK_CREDITS_MENU);
 
 // ----- RETRO INTERACTIVE CODE REPLACEMENT -----
 // ----- Changes in this area are discouraged and may be lost! -----
-    #define RI_CREDITS_TEXT ""  "       ----- Credits -----\n\n"  "\n\n"" Game Builder\n"  "   Retro-Interactive\n"  "\n"  " Game Creation\n"  "   You!\n"  "\n"  " Music\n"  "   Wolfgang (OpenGameArt)\n"  "\n"  " Artwork\n"  "   Refresh Games (OpenGameArt)\n"  "\n"  "\n\n""   Your custom text goes here\n\n"  "\n\n""       Thanks for playing!\n\n"    ""
+    #define RI_CREDITS_TEXT ""  "       ----- Credits -----\n\n"  "\n\n"" Game Builder\n"  "   Retro-Interactive\n"  "\n"  " Game Creation\n"  "   You!!\n"  "\n"  " Music\n"  "   Wolfgang (OpenGameArt)\n"  "\n"  " Artwork\n"  "   Refresh Games (OpenGameArt)\n"  "\n"  "\n\n""   Your custom text goes here\n\n"  "\n\n""       Thanks for playing!\n\n"    ""
 // ----- END RETRO INTERACTIVE CODE REPLACEMENT ----- 
 
 const unsigned char creditsText[] = RI_CREDITS_TEXT;
