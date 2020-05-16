@@ -1,1 +1,46 @@
-[{"custom":"----- Credits -----"},{"isSpacer":true},{"who":"Retro-Interactive","what":"Game Builder","readonly":true,"required":true},{"who":"You!","what":"Game Creation","readonly":false,"required":false},{"who":"Wolfgang (OpenGameArt)","what":"Music","readonly":true,"required":true},{"who":"Refresh Games (OpenGameArt)","what":"Artwork","readonly":true,"required":true},{"isSpacer":true},{"custom":"Your custom text goes here","readonly":false,"required":false},{"isSpacer":true},{"custom":"Thanks for playing!"},{"librarySourceId":"zoria-dungeon-tiles","who":"Unknown","what":"Zoria Dungeon","readonly":true,"required":true}]
+[
+    {
+        "custom": "----- Credits -----"
+    },
+    {
+        "isSpacer": true
+    },
+    {
+        "who": "Retro-Interactive",
+        "what": "Game Builder",
+        "readonly": true,
+        "required": true
+    },
+    {
+        "who": "You!",
+        "what": "Game Creation",
+        "readonly": false,
+        "required": false
+    },
+    {
+        "who": "Wolfgang (OpenGameArt)",
+        "what": "Music",
+        "readonly": true,
+        "required": true
+    },
+    {
+        "who": "Refresh Games (OpenGameArt)",
+        "what": "Artwork",
+        "readonly": true,
+        "required": true
+    },
+    {
+        "isSpacer": true
+    },
+    {
+        "custom": "Your custom text goes here",
+        "readonly": false,
+        "required": false
+    },
+    {
+        "isSpacer": true
+    },
+    {
+        "custom": "Thanks for playing!"
+    }
+]
