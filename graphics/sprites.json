@@ -9,7 +9,8 @@
         },
         "chrFile": "graphics/sprites_npc_1.chr",
         "type": "sprite",
-        "paletteFile": "graphics/palettes/main_sprite.pal"
+        "paletteFile": "graphics/palettes/main_sprite.pal",
+        "firstDefinitionId": 1
     },
     {
         "id": "1796b720-cf8d-4eab-9e77-eb65ff4ad679",
@@ -21,6 +22,7 @@
         },
         "chrFile": "graphics/sprites_npc_2.chr",
         "type": "sprite",
-        "paletteFile": "graphics/palettes/error.pal"
+        "paletteFile": "graphics/palettes/error.pal",
+        "firstDefinitionId": 6
     }
 ]
