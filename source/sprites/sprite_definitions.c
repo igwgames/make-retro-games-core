@@ -24,7 +24,7 @@
 // 3: reserved
 // 4: reserved
 // 5-8: reserved
-// 8-16: 2 palettes for use in this group. Will be SPRITE_PALETTE_3 and SPRITE_PALETTE_4
+// 8-16: 2 palettes for use in this group. Will be SPRITE_PALETTE_2 and SPRITE_PALETTE_3
 
 
 // ----- RETRO INTERACTIVE CODE REPLACEMENT -----
