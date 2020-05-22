@@ -63,7 +63,7 @@ void init_map(void) {
 
     // Also set the palettes to the in-game palettes.
     // pal_bg(mainBgPalette);
-    // pal_spr(mainSpritePalette);
+    pal_spr(mainSpritePalette);
 
     load_tile_specifics();
 
