@@ -6,6 +6,7 @@
 #include "source/menus/error.h"
 #include "source/graphics/game_text.h"
 #include "source/graphics/hud.h"
+#include "source/map/map.h"
 
 unsigned char* currentText;
 unsigned char currentBank;
@@ -15,6 +16,7 @@ unsigned char currentBank;
 #define hasInput tempChar3
 #define currentChar tempChar4
 #define stringIndex tempInt1
+#define currentTileBank tempChar6
 
 void trigger_game_text(const unsigned char* string) {
     gameState = GAME_STATE_SHOWING_TEXT;
@@ -43,7 +45,9 @@ void draw_game_text(void) {
     }
     // Draw sprite0 onto the screen so we can test it.
     oam_spr(249, HUD_PIXEL_HEIGHT-NES_SPRITE_HEIGHT-0, HUD_SPRITE_ZERO_TILE_ID, 0x00, 0);
+    
     // And set the chr bank to use prior.
+    set_tempChar6_to_tile_chr_bank(); // aka currentTileBank ;)
 
     // First, we clear the HUD using our current HUD tiles. Note that this tile must be blank in both chr banks.
     // Any shared HUD elements (borders, etc) must also be present in both layouts.
@@ -64,7 +68,7 @@ void draw_game_text(void) {
     set_nmi_chr_tile_bank(CHR_BANK_MENU);
     ppu_wait_nmi();
     wait_for_sprite0_hit();
-    set_chr_bank_0(CHR_BANK_TILES);
+    set_chr_bank_0(currentTileBank);
     // Drawing done; make sure we don't try to keep drawing it to save some time.
     set_vram_update(NULL);
 
@@ -96,7 +100,7 @@ void draw_game_text(void) {
             // Quick break for nmi to make sure we don't have glitches
             ppu_wait_nmi();
             wait_for_sprite0_hit();
-            set_chr_bank_0(CHR_BANK_TILES);
+            set_chr_bank_0(currentTileBank);
 
             // Draw 3 lines of text.
             for (; bufferIndex != 98; ++bufferIndex) {
@@ -106,7 +110,7 @@ void draw_game_text(void) {
                     // Take a short break to make sure we don't have a glitch because of showing the wrong chr bank.
                     ppu_wait_nmi();
                     wait_for_sprite0_hit();
-                    set_chr_bank_0(CHR_BANK_TILES);
+                    set_chr_bank_0(currentTileBank);
 
                 }
 
@@ -130,7 +134,7 @@ void draw_game_text(void) {
             set_vram_update(buffer);
             ppu_wait_nmi();
             wait_for_sprite0_hit();
-            set_chr_bank_0(CHR_BANK_TILES);
+            set_chr_bank_0(currentTileBank);
             set_vram_update(NULL);
 
         }
@@ -148,7 +152,7 @@ void draw_game_text(void) {
         }
         ppu_wait_nmi();
         wait_for_sprite0_hit();
-        set_chr_bank_0(CHR_BANK_TILES);
+        set_chr_bank_0(currentTileBank);
 
     }
 
@@ -167,6 +171,6 @@ void draw_game_text(void) {
     oam_spr(SPRITE_OFFSCREEN, SPRITE_OFFSCREEN, HUD_SPRITE_ZERO_TILE_ID, 0x00, 0);
 
     // And finally put everything back how the game expects it.
-    set_chr_bank_0(CHR_BANK_TILES);
+    set_chr_bank_0(currentTileBank);
     unset_nmi_chr_tile_bank();
 }

@@ -12,9 +12,12 @@
 #include "source/sprites/sprite_definitions.h"
 #include "source/sprites/map_sprites.h"
 #include "source/menus/error.h"
+#include "temp/tile_meta.h"
 
 // Rest of the files exist, but we really only need 0. Rest should be identical because banks are laid out the same.
 #include "temp/sprite_groups.h"
+
+#define currentValue tempInt1
 
 // This method needs access to stuff in another bank, so it's in the kernel bank
 void set_tempChar6_to_sprite_group(void) {
@@ -22,9 +25,16 @@ void set_tempChar6_to_sprite_group(void) {
     tempChar6 = map_0_spritegroups[playerOverworldPosition];
     bank_pop();
 }
-void set_tempChar6_to_chr_bank(void) {
+void set_tempChar6_to_tile_chr_bank(void) {
     bank_push(currentWorldId);
     tempChar6 = map_0_chr_bank_id;
+    bank_pop();
+}
+
+void load_tile_palette(void) {
+    bank_push(PRG_BANK_TILE_META);
+    tempInt1 = tempChar6 << 4; // Palettes are 16 bytes; we need an index
+    pal_bg(tilePaletteDataLookup + tempInt1);
     bank_pop();
 }
 
@@ -44,16 +54,16 @@ unsigned char currentMapSpritePersistance[64];
 
 unsigned char mapScreenBuffer[0x55];
 
-#define currentValue tempInt1
 void init_map(void) {
     // Make sure we're looking at the right sprite and chr data, not the ones for the menu.
-    set_tempChar6_to_chr_bank();
+    set_tempChar6_to_tile_chr_bank();
     currentMapTilesetId = tempChar6;
     set_chr_bank_0(tempChar6);
+    load_tile_palette();
 
     // Also set the palettes to the in-game palettes.
-    pal_bg(mainBgPalette);
-    pal_spr(mainSpritePalette);
+    // pal_bg(mainBgPalette);
+    // pal_spr(mainSpritePalette);
 
     load_tile_specifics();
 
