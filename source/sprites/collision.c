@@ -8,7 +8,9 @@ CODE_BANK(PRG_BANK_MAP_SPRITES);
 ZEROPAGE_DEF(unsigned int, collisionTemp);
 
 unsigned char test_collision(unsigned char tileId, unsigned char isPlayer) {
-    collisionTemp = (currentMapTilesetId<<6) + (tileId >> 1);
+    collisionTemp = currentMapTilesetId;
+    collisionTemp <<= 7;
+    collisionTemp += (tileId >> 1);
     if (tileId & 0x01 == 0) {
         return (collisionDataLookup[collisionTemp] & 0x0f);
     } else {
