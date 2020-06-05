@@ -1,4 +1,5 @@
 #include "source/library/bank_helpers.h"
+#include "source/configuration/player_info.h"
 #define PRG_BANK_PLAYER_SPRITE 2
 
 // Top-left tile of the sprite of the player facing downward.
@@ -21,13 +22,13 @@
 // Handles player movement - we start slow and accelerate/decelerate up to a max speed. As a player,
 // you probably won't notice this outright, but it feels a lot more natural like this.
 // NOTE: The max velocity needs to be evenly divided by the acceleration. (Eg 20/4 = 5)
-#define PLAYER_MAX_VELOCITY 20 // Max speed of the player; we won't let you go past this.
+#define PLAYER_MAX_VELOCITY RI_PLAYER_MOVEMENT_SPEED // Max speed of the player; we won't let you go past this.
 #define PLAYER_VELOCITY_ACCEL 4 // How quickly do we get up to max velocity?
 
 // If the player is damaged, how long do we lock their controls such that they bounce backwards?
 #define PLAYER_DAMAGE_CONTROL_LOCK_TIME 20
 // If the player is damaged, how long are they immune to damage?
-#define PLAYER_DAMAGE_INVULNERABILITY_TIME 30
+#define PLAYER_DAMAGE_INVULNERABILITY_TIME RI_PLAYER_INVULN_TIME
 // If the player is invulnerable, how quickly to we blink the sprite? In sprite mask form, so one of 0x01, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40, 0x80
 #define PLAYER_INVULNERABILITY_BLINK_MASK 0x02
 
