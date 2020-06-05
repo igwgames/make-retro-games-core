@@ -3,7 +3,7 @@
 
 // ----- RETRO INTERACTIVE CODE REPLACEMENT -----
 // ----- Changes in this area are discouraged and may be lost! -----
-    #define RI_PLAYER_MOVEMENT_TYPE_INT MOVEMENT_TYPE_FULL
+    #define RI_PLAYER_MOVEMENT_TYPE MOVEMENT_TYPE_FULL
     #define RI_PLAYER_MOVEMENT_SPEED_INT 20
     #define RI_PLAYER_STARTING_HEALTH_INT 5
     #define RI_PLAYER_STARTING_MAX_HEALTH_INT 5
