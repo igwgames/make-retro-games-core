@@ -29,8 +29,8 @@ This has the main loop for the game, which is then used to call out to other cod
 void initialize_variables(void) {
 
     playerOverworldPosition = 0; // Which tile on the overworld to start with; 0-62
-    playerHealth = RI_PLAYER_STARTING_HEALTH; // Player's starting health - how many hearts to show on the HUD.
-    playerMaxHealth = RI_PLAYER_STARTING_MAX_HEALTH; // Player's max health - how many hearts to let the player collect before it doesn't count.
+    playerHealth = RI_PLAYER_STARTING_HEALTH_INT; // Player's starting health - how many hearts to show on the HUD.
+    playerMaxHealth = RI_PLAYER_STARTING_MAX_HEALTH_INT; // Player's max health - how many hearts to let the player collect before it doesn't count.
     playerXPosition = (128 << PLAYER_POSITION_SHIFT); // X position on the screen to start (increasing numbers as you go left to right. Just change the number)
     playerYPosition = (128 << PLAYER_POSITION_SHIFT); // Y position on the screen to start (increasing numbers as you go top to bottom. Just change the number)
     playerDirection = SPRITE_DIRECTION_DOWN; // What direction to have the player face to start.
@@ -39,7 +39,6 @@ void initialize_variables(void) {
 
     currentWorldId = WORLD_OVERWORLD; // The ID of the world to load.
 
-    // FIXME: This needs to be updated whenever we load maps
     currentMapTilesetId = 0;
     
     // Little bit of generic initialization below this point - we need to set
