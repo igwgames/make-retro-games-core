@@ -9,7 +9,7 @@
         },
         "chrFile": "graphics/sprites_npc_1.chr",
         "type": "sprite",
-        "paletteFile": "graphics/palettes/main_sprite.pal",
+        "paletteFile": "graphics/palettes/main_sprite_npc1.pal",
         "firstDefinitionId": 1
     },
     {
@@ -22,7 +22,7 @@
         },
         "chrFile": "graphics/sprites_npc_2.chr",
         "type": "sprite",
-        "paletteFile": "graphics/palettes/error.pal",
+        "paletteFile": "graphics/palettes/main_sprite_npc2.pal",
         "firstDefinitionId": 6
     }
 ]
