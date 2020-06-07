@@ -11,6 +11,7 @@
 #include "source/menus/error.h"
 #include "source/graphics/hud.h"
 #include "source/graphics/game_text.h"
+#include "source/configuration/game_info.h"
 
 CODE_BANK(PRG_BANK_PLAYER_SPRITE);
 
@@ -78,12 +79,47 @@ void update_player_sprite(void) {
 
 }
 
+// Tests the controller for a bunch of debug situations.
+// Returns 1 if we need to exit the method immediately (not handle input this frame), false otherwise.
+unsigned char test_debug_input(void) {
+    if (controllerState & PAD_SELECT) {
+        if (controllerState & PAD_START && !(lastControllerState & PAD_START)) {
+            gameState = GAME_STATE_CREDITS;
+            return 1;
+        } else if (controllerState & PAD_LEFT && !(lastControllerState & PAD_LEFT)) {
+            if (playerKeyCount > 0) {
+                --playerKeyCount;
+            }
+        } else if (controllerState & PAD_RIGHT && !(lastControllerState & PAD_RIGHT)) {
+            if (playerKeyCount < MAX_KEY_COUNT) {
+                ++playerKeyCount;
+            }
+        } else if (controllerState & PAD_UP && !(lastControllerState & PAD_UP)) {
+            if (playerHealth < playerMaxHealth) {
+                ++playerHealth;
+            }
+        } else if (controllerState & PAD_DOWN && !(lastControllerState & PAD_DOWN)) {
+            if (playerHealth > 1) {
+                --playerHealth;
+            }
+        }
+    }
+
+    return 0;
+}
+
 void handle_player_movement(void) {
     // Using a variable, so we can change the velocity based on pressing a button, having a special item,
     // or whatever you like!
     int maxVelocity = PLAYER_MAX_VELOCITY;
     lastControllerState = controllerState;
     controllerState = pad_poll(0);
+
+    #if RI_DEBUG_MODE_BOOL
+        if (test_debug_input()) {
+            return;
+        }
+    #endif
 
     // If Start is pressed now, and was not pressed before...
     if (controllerState & PAD_START && !(lastControllerState & PAD_START)) {

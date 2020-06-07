@@ -87,7 +87,7 @@ endif
 # There are probably better ways to do this, and I know things are still deleted. Feel free to PR a better way in.
 .PRECIOUS: $(SOURCE_C) $(SOURCE_S) $(SOURCE_O) temp/%.s
 
-build: rom/$(ROM_NAME).nes graphics/generated/tiles.png graphics/generated/sprites.png
+build: rom/$(ROM_NAME).nes graphics/generated/tiles.png 
 
 build-tiles: graphics/generated/tiles.png
 build-sprites: graphics/generated/sprites.png
@@ -118,11 +118,13 @@ temp/map__%.c: levels/levels.json levels/*.tmx
 	$(MAP_PARSER)
 temp/map_%_meta.c: levels/levels.json levels/*.tmx
 	$(MAP_PARSER)
+
 graphics/generated/tiles.png: graphics/tiles.chr graphics/sprites.chr graphics/palettes/main_bg.pal
 	$(CHR2IMG) graphics/tiles.chr graphics/palettes/main_bg.pal graphics/generated/tiles.png
 
-graphics/generated/sprites.png: graphics/tiles.chr graphics/sprites.chr graphics/palettes/main_sprite.pal source/sprites/sprite_definitions.c
-	$(SPRITE_DEF2IMG) ./source/sprites/sprite_definitions.c ./graphics/sprites.chr ./graphics/palettes/main_sprite.pal graphics/generated/sprites.png
+# DISABLED: Sprites no longer work quite like this. Needs a major revamp to even make this work.
+# graphics/generated/sprites.png: graphics/tiles.chr graphics/sprites.chr graphics/palettes/main_sprite.pal source/sprites/sprite_definitions.c
+#	$(SPRITE_DEF2IMG) ./source/sprites/sprite_definitions.c ./graphics/sprites.chr ./graphics/palettes/main_sprite.pal graphics/generated/sprites.png
 
 sound/sfx/generated/sfx.s: sound/sfx/sfx.nsf
 	$(SFX_CONVERTER) sound/sfx/sfx.nsf -ca65 -ntsc && sleep 1 && $(AFTER_SFX_CONVERTER)
