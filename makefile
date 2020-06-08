@@ -30,6 +30,7 @@ CHR2IMG=node tools/chr2img/src/index.js
 TMX2C=node tools/tmx2c/src/index.js
 SPRITE_DEF2IMG=node tools/sprite_def2img/src/index.js
 TILE_META_GENERATOR=node tools/tile_meta_generator/src/index.js
+CREDITS_GENERATOR=node tools/credits_generator/src/index.js
 MAP_PARSER=node tools/map_parser/src/index.js
 
 # Javascript versions of built-in tools: (Uncomment these if you're working on the tools)
@@ -49,7 +50,7 @@ SOURCE_O=$(addprefix temp/, $(notdir $(patsubst %.s, %.o, $(SOURCE_S))))
 SOURCE_DIRS=$(sort $(dir $(call rwildcard, source, %))) temp
 SOURCE_CRT0_ASM=$(strip $(call rwildcard, source/, *.asm))
 SOURCE_CRT0_GRAPHICS=$(strip $(call rwildcard, graphics/, *.pal)) $(strip $(call rwildcard, graphics/, *.chr))
-SOURCE_HEADERS=$(strip $(call rwildcard, source/, *.h))
+SOURCE_HEADERS=$(strip $(call rwildcard, source/, *.h)) temp/credits_text.h
 
 VPATH=$(SOURCE_DIRS)
 # Uses the windows command line to open your rom, 
@@ -118,6 +119,9 @@ temp/map__%.c: levels/levels.json levels/*.tmx
 	$(MAP_PARSER)
 temp/map_%_meta.c: levels/levels.json levels/*.tmx
 	$(MAP_PARSER)
+
+temp/credits_text.h: source/menus/credits.json
+	$(CREDITS_GENERATOR)
 
 graphics/generated/tiles.png: graphics/tiles.chr graphics/sprites.chr graphics/palettes/main_bg.pal
 	$(CHR2IMG) graphics/tiles.chr graphics/palettes/main_bg.pal graphics/generated/tiles.png

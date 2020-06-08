@@ -14,6 +14,7 @@ tools/chr2img/src/node_modules
 !tools/zip_readme
 !tools/github-action-build
 !tools/tile_meta_generator
+!tools/credits_generator
 !tools/map_parser
 tools_bak
 graphics/generated/*.png
