@@ -14,7 +14,10 @@ const levelData = require('../../../levels/levels.json'),
     spritesData = require('../../../graphics/sprites.json'),
     spriteDataIds = spritesData.map(sprite => { return sprite.id }),
     updatedLevelData = [],
-	promises = [];
+    promises = [];
+    
+let spawnMapId = 0,
+    spawnPoint;
 
 // Get exactly the amount of data we need; pad up as needed.
 for (var i = 0; i != MAX_MAPS; i++) {
@@ -22,6 +25,10 @@ for (var i = 0; i != MAX_MAPS; i++) {
         updatedLevelData.push(levelData[i]);
     } else {
         updatedLevelData.push(levelData[0]);
+    }
+    if (updatedLevelData[i].spawnPoint) {
+        spawnMapId = i;
+        spawnPoint = updatedLevelData[i].spawnPoint;
     }
 }
 
@@ -103,6 +110,12 @@ const unsigned char spriteDefinitionGroups[] = {
 
 const outputH = `
 #define FIRST_TILESET_BANK_ID ${FIRST_SPRITE_CHR_BANK}
+#define FIRST_MAP_BANK_ID ${FIRST_MAP}
+
+#define PLAYER_SPAWN_MAP_ID ${spawnMapId}
+#define PLAYER_SPAWN_ROOM_ID ${spawnPoint.mapTileId}
+#define PLAYER_SPAWN_X ${Math.floor(spawnPoint.tileId % 16) * 16}
+#define PLAYER_SPAWN_Y ${Math.floor(spawnPoint.tileId / 16) * 16}
 
 extern const unsigned char spriteDefinitionGroups[]; 
 extern const unsigned char map_0_chr_bank_id;

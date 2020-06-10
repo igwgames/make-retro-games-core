@@ -22,22 +22,23 @@ This has the main loop for the game, which is then used to call out to other cod
 #include "source/menus/input_helpers.h"
 #include "source/menus/game_over.h"
 #include "source/configuration/player_info.h"
+#include "temp/sprite_groups.h"
 
 
 // Method to set a bunch of variables to default values when the system starts up.
 // Note that if variables aren't set in this method, they will start at 0 on NES startup.
 void initialize_variables(void) {
 
-    playerOverworldPosition = 0; // Which tile on the overworld to start with; 0-62
+    playerOverworldPosition = PLAYER_SPAWN_ROOM_ID; // Which tile on the overworld to start with; 0-62
     playerHealth = RI_PLAYER_STARTING_HEALTH_INT; // Player's starting health - how many hearts to show on the HUD.
     playerMaxHealth = RI_PLAYER_STARTING_MAX_HEALTH_INT; // Player's max health - how many hearts to let the player collect before it doesn't count.
-    playerXPosition = (128 << PLAYER_POSITION_SHIFT); // X position on the screen to start (increasing numbers as you go left to right. Just change the number)
-    playerYPosition = (128 << PLAYER_POSITION_SHIFT); // Y position on the screen to start (increasing numbers as you go top to bottom. Just change the number)
+    playerXPosition = (PLAYER_SPAWN_X << PLAYER_POSITION_SHIFT); // X position on the screen to start (increasing numbers as you go left to right. Just change the number)
+    playerYPosition = ((PLAYER_SPAWN_Y + HUD_PIXEL_HEIGHT) << PLAYER_POSITION_SHIFT); // Y position on the screen to start (increasing numbers as you go top to bottom. Just change the number)
     playerDirection = SPRITE_DIRECTION_DOWN; // What direction to have the player face to start.
 
     lastPlayerSpriteCollisionId = NO_SPRITE_HIT;
 
-    currentWorldId = WORLD_OVERWORLD; // The ID of the world to load.
+    currentWorldId = FIRST_MAP_BANK_ID + PLAYER_SPAWN_MAP_ID; // The ID of the world to load.
 
     currentMapTilesetId = 0;
     
