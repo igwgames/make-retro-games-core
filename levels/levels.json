@@ -69,7 +69,10 @@
             "8ca72e8e-3d13-4a8f-99ec-37905e3a44a0"
         ],
         "tmxFile": "levels/overworld.tmx",
-        "spawnPoint": null
+        "spawnPoint": {
+            "mapTileId": 0,
+            "tileId": 104
+        }
     },
     {
         "id": "baf32c37-b3e5-4530-bdb3-79665e77d430",
@@ -141,10 +144,7 @@
             "8ca72e8e-3d13-4a8f-99ec-37905e3a44a0"
         ],
         "tmxFile": "levels/underworld.tmx",
-        "spawnPoint": {
-            "mapTileId": 10,
-            "tileId": 108
-        }
+        "spawnPoint": null
     },
     {
         "id": "3c9b799b-9163-4749-b79b-f03f09f46044",
