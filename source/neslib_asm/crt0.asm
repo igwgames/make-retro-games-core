@@ -10,7 +10,7 @@ FT_SFX_STREAMS			= 4			;number of sound effects played at once, 1..4
 .include "source/neslib_asm/mmc1_macros.asm"
 
     .export _exit,__STARTUP__:absolute=1
-	.import initlib,push0,popa,popax,_main,zerobss,copydata,pusha,pushax,_fade_in,_fade_out_slow
+	.import initlib,push0,popa,popax,_main,zerobss,copydata,pusha,pushax,_fade_in,_fade_out_slow, _gameAuthor, _currentYear
 	.importzp _tempChar8, _tempChar9, _tempChara
 
 ; Linker generated symbols
@@ -434,12 +434,94 @@ sounds_data:
 		lda #0 
 		sta _tempChara
 
-		_loop_time:
+		@_loop_time:
 			jsr _ppu_wait_nmi
 			inc _tempChara
 			lda _tempChara
 			cmp #120
-			bne _loop_time
+			bne @_loop_time
+		
+		jsr _fade_out_slow
+
+		; gpl
+
+		jsr _oam_clear
+		jsr _ppu_off
+		jsr _ppu_wait_nmi
+		lda #$0a
+		jsr _set_chr_bank_0
+		lda #0a
+		jsr _set_chr_bank_1
+		;lda #1
+		;jsr _bank_spr
+		lda #<(_titlePalette)
+		ldx #>(_titlePalette)
+		jsr _pal_bg
+		;lda #<(splash_pal)
+		;ldx #>(splash_pal)
+		;jsr _pal_spr
+
+		lda #<($2000)
+		ldx #>($2000)
+		jsr _vram_adr
+
+		lda #<(gpl_nam)
+		ldx #>(gpl_nam)
+		jsr _vram_unrle
+
+		lda #<($2062)
+		ldx #>($2062)
+		jsr _vram_adr
+		ldx #0
+		@loop_name:
+			lda _gameAuthor, x
+			cmp #0
+			beq @loop_name_done
+			sec
+			sbc #$20
+			sta PPU_DATA
+			inx
+			jmp @loop_name
+		@loop_name_done:
+		lda #<($2050)
+		ldx #>($2050)
+		jsr _vram_adr
+		ldx #0
+		.repeat 4
+			lda _currentYear, x
+			sec
+			sbc #$20 
+			sta PPU_DATA
+			inx
+		.endrepeat
+
+		lda #160
+		sta _tempChara
+
+		lda #0
+		jsr _pal_bright
+		jsr _ppu_wait_nmi
+		jsr _ppu_on_all
+		jsr _ppu_wait_nmi
+		jsr _fade_in
+		
+		lda #200
+		sta _tempChara
+
+		@_loop_time2:
+			jsr _ppu_wait_nmi
+			inc _tempChara
+			lda _tempChara
+			cmp #120
+			bne @_loop_time2
+
+		@loop_until_start:
+			jsr _ppu_wait_nmi
+			lda #0
+			jsr _pad_trigger
+			and #$08
+			cmp #0
+			beq @loop_until_start
 		
 		jsr _fade_out_slow
 
@@ -449,4 +531,6 @@ sounds_data:
 		.incbin "graphics/splash.pngE/nametable0.nam"
 	splash_pal:
 		.incbin "graphics/splash.pngE/palette_edit.pal"
+	gpl_nam:
+		.incbin "graphics/gpl.rle"
 	.include "source/configuration/engine_version.asm"
