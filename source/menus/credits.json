@@ -42,5 +42,18 @@
     },
     {
         "custom": "Thanks for playing!"
+    },
+    {
+        "librarySourceId": "zoria-desert-tiles",
+        "who": "DragonDePlatino",
+        "what": "Zoria Desert",
+        "readonly": true,
+        "required": true,
+        "fullAuthor": {
+            "name": "DragonDePlatino",
+            "url": "https://opengameart.org/content/zoria-tileset",
+            "license": "CC-BY 4.0",
+            "licenseUrl": "https://creativecommons.org/licenses/by/4.0/"
+        }
     }
 ]
