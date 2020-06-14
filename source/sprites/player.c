@@ -67,7 +67,7 @@ void update_player_sprite(void) {
         oam_spr(SPRITE_OFFSCREEN, SPRITE_OFFSCREEN, rawTileId + 17, 0x00, PLAYER_SPRITE_INDEX+12);
 
     } else {
-        #if RI_PLAYER_MOVEMENT_TYPE == PLAYER_MOVEMENT_TYPE_2FRAME
+        #if RI_PLAYER_MOVEMENT_TYPE_DEF == PLAYER_MOVEMENT_TYPE_2FRAME
             if (playerXVelocity != 0 || playerYVelocity != 0) {
                 // Does some math with the current NES frame to add either 2 or 0 to the tile id, animating the sprite.
                 rawTileId += ((frameCount >> SPRITE_ANIMATION_SPEED_DIVISOR) & 0x01) << 1;
@@ -77,7 +77,7 @@ void update_player_sprite(void) {
             oam_spr(rawXPosition + NES_SPRITE_WIDTH, rawYPosition, rawTileId + 1, 0x00, PLAYER_SPRITE_INDEX+4);
             oam_spr(rawXPosition, rawYPosition + NES_SPRITE_HEIGHT, rawTileId + 16, 0x00, PLAYER_SPRITE_INDEX+8);
             oam_spr(rawXPosition + NES_SPRITE_WIDTH, rawYPosition + NES_SPRITE_HEIGHT, rawTileId + 17, 0x00, PLAYER_SPRITE_INDEX+12);
-        #elif RI_PLAYER_MOVEMENT_TYPE == PLAYER_MOVEMENT_TYPE_3FRAME
+        #elif RI_PLAYER_MOVEMENT_TYPE_DEF == PLAYER_MOVEMENT_TYPE_3FRAME
             oam_spr(rawXPosition, rawYPosition, rawTileId, 0x00, PLAYER_SPRITE_INDEX);
             oam_spr(rawXPosition + NES_SPRITE_WIDTH, rawYPosition, rawTileId + 1, 0x00, PLAYER_SPRITE_INDEX+4);
             if (playerXVelocity != 0 || playerYVelocity != 0) {
@@ -91,7 +91,7 @@ void update_player_sprite(void) {
             oam_spr(rawXPosition, rawYPosition + NES_SPRITE_HEIGHT, rawTileId, 0x00, PLAYER_SPRITE_INDEX+8);
             oam_spr(rawXPosition + NES_SPRITE_WIDTH, rawYPosition + NES_SPRITE_HEIGHT, rawTileId + 1, 0x00, PLAYER_SPRITE_INDEX+12);
         #else
-            // This tells you that RI_PLAYER_MOVEMENT_TYPE isn't defined by one of the above cases.
+            // This tells you that RI_PLAYER_MOVEMENT_TYPE_DEF isn't defined by one of the above cases.
             unknown_player_movement_type_error();
         #endif
 
