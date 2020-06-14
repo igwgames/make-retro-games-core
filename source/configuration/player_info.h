@@ -1,9 +1,10 @@
 // A bunch of information about the player
-#define MOVEMENT_TYPE_FULL 0
+#define PLAYER_MOVEMENT_TYPE_2FRAME 0
+#define PLAYER_MOVEMENT_TYPE_3FRAME 1
 
 // ----- RETRO INTERACTIVE CODE REPLACEMENT -----
 // ----- Changes in this area are discouraged and may be lost! -----
-    #define RI_PLAYER_MOVEMENT_TYPE "MOVEMENT_TYPE_FULL"
+    #define RI_PLAYER_MOVEMENT_TYPE PLAYER_MOVEMENT_TYPE_3FRAME
     #define RI_PLAYER_MOVEMENT_SPEED_INT 20
     #define RI_PLAYER_STARTING_HEALTH_INT 6
     #define RI_PLAYER_STARTING_MAX_HEALTH_INT 6

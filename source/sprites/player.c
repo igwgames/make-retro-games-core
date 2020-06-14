@@ -12,6 +12,7 @@
 #include "source/graphics/hud.h"
 #include "source/graphics/game_text.h"
 #include "source/configuration/game_info.h"
+#include "source/configuration/player_info.h"
 
 CODE_BANK(PRG_BANK_PLAYER_SPRITE);
 
@@ -57,11 +58,6 @@ void update_player_sprite(void) {
     rawXPosition = (playerXPosition >> PLAYER_POSITION_SHIFT);
     rawYPosition = (playerYPosition >> PLAYER_POSITION_SHIFT);
     rawTileId = PLAYER_SPRITE_TILE_ID + playerDirection;
-
-    if (playerXVelocity != 0 || playerYVelocity != 0) {
-        // Does some math with the current NES frame to add either 2 or 0 to the tile id, animating the sprite.
-        rawTileId += ((frameCount >> SPRITE_ANIMATION_SPEED_DIVISOR) & 0x01) << 1;
-    }
     
     if (playerInvulnerabilityTime && frameCount & PLAYER_INVULNERABILITY_BLINK_MASK) {
         // If the player is invulnerable, we hide their sprite about half the time to do a flicker animation.
@@ -71,10 +67,34 @@ void update_player_sprite(void) {
         oam_spr(SPRITE_OFFSCREEN, SPRITE_OFFSCREEN, rawTileId + 17, 0x00, PLAYER_SPRITE_INDEX+12);
 
     } else {
-        oam_spr(rawXPosition, rawYPosition, rawTileId, 0x00, PLAYER_SPRITE_INDEX);
-        oam_spr(rawXPosition + NES_SPRITE_WIDTH, rawYPosition, rawTileId + 1, 0x00, PLAYER_SPRITE_INDEX+4);
-        oam_spr(rawXPosition, rawYPosition + NES_SPRITE_HEIGHT, rawTileId + 16, 0x00, PLAYER_SPRITE_INDEX+8);
-        oam_spr(rawXPosition + NES_SPRITE_WIDTH, rawYPosition + NES_SPRITE_HEIGHT, rawTileId + 17, 0x00, PLAYER_SPRITE_INDEX+12);
+        #if RI_PLAYER_MOVEMENT_TYPE == PLAYER_MOVEMENT_TYPE_2FRAME
+            if (playerXVelocity != 0 || playerYVelocity != 0) {
+                // Does some math with the current NES frame to add either 2 or 0 to the tile id, animating the sprite.
+                rawTileId += ((frameCount >> SPRITE_ANIMATION_SPEED_DIVISOR) & 0x01) << 1;
+            }
+
+            oam_spr(rawXPosition, rawYPosition, rawTileId, 0x00, PLAYER_SPRITE_INDEX);
+            oam_spr(rawXPosition + NES_SPRITE_WIDTH, rawYPosition, rawTileId + 1, 0x00, PLAYER_SPRITE_INDEX+4);
+            oam_spr(rawXPosition, rawYPosition + NES_SPRITE_HEIGHT, rawTileId + 16, 0x00, PLAYER_SPRITE_INDEX+8);
+            oam_spr(rawXPosition + NES_SPRITE_WIDTH, rawYPosition + NES_SPRITE_HEIGHT, rawTileId + 17, 0x00, PLAYER_SPRITE_INDEX+12);
+        #elif RI_PLAYER_MOVEMENT_TYPE == PLAYER_MOVEMENT_TYPE_3FRAME
+            oam_spr(rawXPosition, rawYPosition, rawTileId, 0x00, PLAYER_SPRITE_INDEX);
+            oam_spr(rawXPosition + NES_SPRITE_WIDTH, rawYPosition, rawTileId + 1, 0x00, PLAYER_SPRITE_INDEX+4);
+            if (playerXVelocity != 0 || playerYVelocity != 0) {
+                rawTileId += 2;
+                // Does some math with the current NES frame to add either 16 or 0 to the tile id, animating the sprite.
+                rawTileId += ((frameCount >> SPRITE_ANIMATION_SPEED_DIVISOR) & 0x01) << 4;
+            } else {
+                rawTileId += 16;
+            }
+
+            oam_spr(rawXPosition, rawYPosition + NES_SPRITE_HEIGHT, rawTileId, 0x00, PLAYER_SPRITE_INDEX+8);
+            oam_spr(rawXPosition + NES_SPRITE_WIDTH, rawYPosition + NES_SPRITE_HEIGHT, rawTileId + 1, 0x00, PLAYER_SPRITE_INDEX+12);
+        #else
+            // This tells you that RI_PLAYER_MOVEMENT_TYPE isn't defined by one of the above cases.
+            unknown_player_movement_type_error();
+        #endif
+
     }
 
 }
