@@ -14,6 +14,7 @@ CODE_BANK(PRG_BANK_MAP_SPRITES);
 #define currentMapSpriteIndex tempChar1
 #define currentSpriteSize tempChar2
 #define currentSpriteTileId tempChar3
+#define currentSpriteTileId2 tempChara
 #define oamMapSpriteIndex tempChar4
 #define currentSpriteType tempChar5
 #define currentSpriteData tempChar6
@@ -58,6 +59,7 @@ void update_map_sprites(void) {
         sprY = ((currentMapSpriteData[currentMapSpriteIndex + MAP_SPRITE_DATA_POS_Y]) + ((currentMapSpriteData[currentMapSpriteIndex + MAP_SPRITE_DATA_POS_Y + 1]) << 8));
         currentSpriteSize = currentMapSpriteData[currentMapSpriteIndex + MAP_SPRITE_DATA_POS_SIZE_PALETTE] & SPRITE_SIZE_MASK;
         currentSpriteTileId = currentMapSpriteData[currentMapSpriteIndex + MAP_SPRITE_DATA_POS_TILE_ID];
+        currentSpriteTileId2 = currentSpriteTileId + 16;
 
         // NOTE: we're only setting currentSpriteFullWidth here because our code assumes everything is a square. If you
         // change that, be sure to change currentSpriteFullHeight here, and give it a new variable above.
@@ -89,7 +91,7 @@ void update_map_sprites(void) {
                 } else if (currentSpriteSize == SPRITE_SIZE_16PX_16PX) {
                     currentSpriteTileId += ((frameCount & 0x10) >> 3);
                 }
-
+                currentSpriteTileId2 = currentSpriteTileId + 16;
                 break;
             case SPRITE_ANIMATION_SWAP_FAST:
                 if (currentSpriteSize == SPRITE_SIZE_8PX_8PX) {
@@ -97,6 +99,7 @@ void update_map_sprites(void) {
                 } else if (currentSpriteSize == SPRITE_SIZE_16PX_16PX) {
                     currentSpriteTileId += ((frameCount & 0x08) >> 2);
                 }
+                currentSpriteTileId2 = currentSpriteTileId + 16;
                 break;
             case SPRITE_ANIMATION_FULL:
                 // This is for sprites that can face up/down/left/right, and are animated while they do so.
@@ -115,6 +118,24 @@ void update_map_sprites(void) {
                 } else {
                     currentSpriteTileId += (frameCount & 0x08) >> 3;
                 }
+                currentSpriteTileId2 = currentSpriteTileId + 16;
+                break;
+            case SPRITE_ANIMATION_FULL_3FRAME:
+                // This is for sprites that can face up/down/left/right, and are animated while they do so.
+                currentSpriteData = currentMapSpriteData[currentMapSpriteIndex + MAP_SPRITE_DATA_POS_CURRENT_DIRECTION];
+                if (currentSpriteData == SPRITE_DIRECTION_LEFT) {
+                    currentSpriteTileId += 0x0c;
+                } else if (currentSpriteData == SPRITE_DIRECTION_RIGHT) {
+                    currentSpriteTileId += 0x08;
+                } else if (currentSpriteData == SPRITE_DIRECTION_UP) {
+                    currentSpriteTileId += 0x04;
+                } // Else, you're facing down, which conveniently is in position zero. So, do nothing!
+
+                // Next, let's animate based on the current frame, if you're moving
+                if (currentMapSpriteData[currentMapSpriteIndex + MAP_SPRITE_DATA_POS_CURRENT_DIRECTION] != SPRITE_DIRECTION_STATIONARY) {
+                    currentSpriteTileId2 = currentSpriteTileId + 2 + (frameCount & 0x10); // No shifting needed; 0x10 == 16
+                }
+
                 break;
             case SPRITE_ANIMATION_NONE:
             default:
@@ -263,14 +284,14 @@ void update_map_sprites(void) {
             oam_spr(
                 sprX8,
                 sprY8 + NES_SPRITE_HEIGHT,
-                currentSpriteTileId + 16,
+                currentSpriteTileId2,
                 tempMapSpriteIndex,
                 oamMapSpriteIndex + 8
             );
             oam_spr(
                 sprX8 + NES_SPRITE_WIDTH,
                 sprY8 + NES_SPRITE_HEIGHT,
-                currentSpriteTileId + 17,
+                currentSpriteTileId2 + 1,
                 tempMapSpriteIndex,
                 oamMapSpriteIndex + 12
             );

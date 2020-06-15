@@ -20,6 +20,7 @@
 #define SPRITE_ANIMATION_SWAP_FAST 11
 // This is the "full" animation style - it flips between two animation frames in each direction.
 #define SPRITE_ANIMATION_FULL 50
+#define SPRITE_ANIMATION_FULL_3FRAME 51
 
 // Use this for sprites that never move.
 #define SPRITE_MOVEMENT_NONE 0
