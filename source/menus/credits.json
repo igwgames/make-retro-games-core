@@ -68,5 +68,18 @@
             "license": "CC-BY-SA 3.0",
             "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/"
         }
+    },
+    {
+        "librarySourceId": "nes-styled-rpg-2",
+        "who": "Erbarlow",
+        "what": "Conjurer",
+        "readonly": true,
+        "required": true,
+        "fullAuthor": {
+            "name": "Erbarlow",
+            "url": "https://opengameart.org/content/more-nes-style-rpg-characters",
+            "license": "CC-BY-SA 3.0",
+            "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/"
+        }
     }
 ]
