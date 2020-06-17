@@ -40,5 +40,21 @@
         "firstDefinitionId": 14,
         "chrFile": "graphics/ecc554d2-8a85-4f0a-93c8-1a9c9bc44e60.chr",
         "paletteFile": "graphics/ecc554d2-8a85-4f0a-93c8-1a9c9bc44e60.pal"
+    },
+    {
+        "id": "4af0ddc7-ce76-4956-9c51-6d9b20faeab6",
+        "originalId": "nes-style-rpg-group-2",
+        "originalParentId": "nes-style-rpg-2",
+        "name": "NES-style RPG NPCs (Group 2)",
+        "type": "sprite",
+        "authorInfo": {
+            "name": "Erbarlow",
+            "url": "https://opengameart.org/content/more-nes-style-rpg-characters",
+            "license": "CC-BY-SA 3.0",
+            "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/"
+        },
+        "firstDefinitionId": 19,
+        "chrFile": "graphics/4af0ddc7-ce76-4956-9c51-6d9b20faeab6.chr",
+        "paletteFile": "graphics/4af0ddc7-ce76-4956-9c51-6d9b20faeab6.pal"
     }
 ]
