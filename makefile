@@ -42,9 +42,10 @@ SOUND_BANK=0
 
 SOURCE_LEVELS_C=temp/map__0.c temp/map__1.c temp/map__2.c temp/map__2.c temp/map__3.c temp/map__4.c temp/map__5.c
 SOURCE_LEVEL_META_C=temp/map_0_meta.c temp/map_1_meta.c temp/map_2_meta.c temp/map_3_meta.c temp/map_4_meta.c temp/map_5_meta.c 
+SOURCE_LEVEL_TEXT_C=temp/map__0_text.c temp/map__1_text.c temp/map__2_text.c temp/map__2_text.c temp/map__3_text.c temp/map__4_text.c temp/map__5_text.c
 SOURCE_LEVEL_OTHER=temp/sprite_groups.c
 
-SOURCE_C=$(SOURCE_LEVELS_C) $(SOURCE_LEVEL_META_C) $(SOURCE_LEVEL_OTHER) $(strip $(call rwildcard, source/, *.c))
+SOURCE_C=$(SOURCE_LEVELS_C) $(SOURCE_LEVEL_META_C) $(SOURCE_LEVEL_TEXT_C) $(SOURCE_LEVEL_OTHER) $(strip $(call rwildcard, source/, *.c))
 SOURCE_S=$(patsubst source/, temp/, $(patsubst %.c, %.s, $(SOURCE_C)))
 SOURCE_O=$(addprefix temp/, $(notdir $(patsubst %.s, %.o, $(SOURCE_S))))
 SOURCE_DIRS=$(sort $(dir $(call rwildcard, source, %))) temp

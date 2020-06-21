@@ -24,6 +24,12 @@ void trigger_game_text(const unsigned char* string) {
     currentBank = get_prg_bank();
 }
 
+void trigger_game_text_banked(const unsigned char* string, unsigned char bank) {
+    gameState = GAME_STATE_SHOWING_TEXT;
+    currentText = (unsigned char*)string;
+    currentBank = bank;
+}
+
 // private method in the primary bank to load characters from the bank the text resides in. We have to keep
 // this separate so we can limit how much code we put into the primary bank.
 void set_char_at_buffer_index(void) {

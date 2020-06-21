@@ -21,3 +21,4 @@ void trigger_game_text(const unsigned char* string);
 
 // Draw text to the screen and handle input for it - this can span multiple screens depending on text length.
 void draw_game_text(void);
+void trigger_game_text_banked(const unsigned char* string, unsigned char bankId);

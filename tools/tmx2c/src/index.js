@@ -8,6 +8,8 @@
  * as-is.
  */
 var VERSION = require('./package.json').version;
+// HACK: Parse text out, render to banks.
+var TEXT_BANK = 7;
 
 // Expects exactly tmx2c infile outfile (first param is always node)
 if (process.argv.length != 6) {
@@ -80,7 +82,8 @@ tmxParse.parseFile(process.argv[4], function(err, tmxData) {
         fileData = '',
         mapData = '',
         spriteData = '',
-        containsWarnings = false;
+        containsWarnings = false,
+        textDictionary = {};
 
     verbose('Map width: ' + width + ' height: ' + height + ' length: ' + (width * height) + ' bytes.');
         
@@ -109,6 +112,7 @@ tmxParse.parseFile(process.argv[4], function(err, tmxData) {
     for (var y = 0; y < roomsTall; y++) {
         for (var x = 0; x < roomsWide; x++) {
             var roomSpriteData = [];
+            var extendedSpriteData = [];
             if (x == 7 && y == 7) {
                 verbose('Skipping the final room, because there is not enough rom space the way we map things out. Perhaps if we used RLE...');
                 continue; // Skips this single iteration, but continues the loop.
@@ -155,6 +159,20 @@ tmxParse.parseFile(process.argv[4], function(err, tmxData) {
             }
             while (roomSpriteData.length < 32) {
                 roomSpriteData.push(255);
+            }   
+            for (var i = 0; i != 8; i++) {
+                var prop = `tile-${x}-${y}--sprite-0${i}--npc-text`,
+                    propTXT = 'bank_' + process.argv[2] + '__' + prop.replace(/-/g, '_');
+                if (tmxData.properties[prop]) {
+
+                    textDictionary[propTXT] = tmxData.properties[prop];
+                    extendedSpriteData.push(TEXT_BANK);
+                    extendedSpriteData.push(`${propTXT}_lo`);
+                    extendedSpriteData.push(`${propTXT}_hi`);
+                    extendedSpriteData.push(0);
+                } else {
+                    extendedSpriteData.push(TEXT_BANK, 0, 0, 0);
+                }
             }
             
             // Okay, main room data is done, add sprites
@@ -168,9 +186,10 @@ tmxParse.parseFile(process.argv[4], function(err, tmxData) {
 
             // Lastly, we want things to line up perfectly so we have 256 per map tile (makes math easier)
             // So, add some padding. (Note: If you wanna add your own data, this is the spot!)
-            mapData += '// add a little padding - we want each map screen to take up exactly 256 bytes to make math easier.\n';
-            mapData += '0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, \n';
-            mapData += '0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, \n\n';
+            mapData += '// Extended sprite data, for text info, etc... \n';
+            mapData += extendedSpriteData.join(', ') + ','
+            
+            mapData +='\n\n';
 
         }
     }
@@ -182,15 +201,47 @@ tmxParse.parseFile(process.argv[4], function(err, tmxData) {
     // Need to include the count of characters to make C happy :(
     var elementCount = mapData.split(',').length;
 
+    var textDictionaryData = `
+#include "source/library/bank_helpers.h"
+
+CODE_BANK(${TEXT_BANK});
+
+const unsigned char text_dictionary_bank_${process.argv[2]}[] = \\\n`;
+    var startNum = 0;
+    // Prepend the string with "Hello!" to let us use 0 for any unknown strings.
+    textDictionaryData += '"Hello!\\0"\\\n';
+    startNum += 7;
+    Object.keys(textDictionary).sort().forEach(key => {
+        textDictionaryData += '// ' + key + '\n"' + textDictionary[key] + '\\0"\\\n';
+        mapData = mapData.split(key+'_lo').join('LSB('+startNum+')').split(key+'_hi').join('MSB(' + startNum +')');
+        startNum += textDictionary[key].length + 1;
+    });
+    textDictionaryData += '\n\n;';
 
 
     // Little trick to tab every single line in, so our output looks nicer
     mapData = "    " + mapData.replace(/[\n]/g, "\n    ");
 
-    mapData = "#include \"source/library/bank_helpers.h\"\n#include \""+process.argv[5]+".h\"\n\nCODE_BANK(PRG_BANK_MAP_"+process.argv[3].toUpperCase()+");\n\n"+'const unsigned char ' + process.argv[3] + "["+elementCount+"] = {\n\n" + mapData + "\n\n\n};\n";
+    mapData = `
+#include "source/library/bank_helpers.h"
+#include "${process.argv[5]}.h"
+#include "source/neslib_asm/neslib.h"
+
+CODE_BANK(PRG_BANK_MAP_${process.argv[3].toUpperCase()});
+
+
+const unsigned char ${process.argv[3]}[${elementCount}] = {
+    
+${mapData}
+
+
+};
+`;
+
     var headerData = "// This is the data for your entire map, as made available in the .c file of this name\n\n#define PRG_BANK_MAP_"+process.argv[3].toUpperCase()+" "+process.argv[2]+"\nextern const unsigned char "+process.argv[3]+"[" + elementCount + "];";
 
     fs.writeFileSync(process.argv[5]+'.c', mapData);
+    fs.writeFileSync(process.argv[5]+'_text.c', textDictionaryData);
     fs.writeFileSync(process.argv[5]+'.h', headerData);
 
     if (containsWarnings) {

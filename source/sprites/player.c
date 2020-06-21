@@ -13,8 +13,7 @@
 #include "source/graphics/game_text.h"
 #include "source/configuration/game_info.h"
 #include "source/configuration/player_info.h"
-
-CODE_BANK(PRG_BANK_PLAYER_SPRITE);
+#include "temp/sprite_groups.h"
 
 // Some useful global variables
 ZEROPAGE_DEF(int, playerXPosition);
@@ -40,17 +39,21 @@ ZEROPAGE_DEF(unsigned char, playerDirection);
 #define collisionTempXInt tempInt3
 #define collisionTempYInt tempInt4
 
- const unsigned char* introductionText = 
-                                "Welcome to nes-starter-kit! I " 
-                                "am an NPC.                    "
-                                "                              "
+#define textBankNum tempChar8
+#define ptrTextData tempInt1
 
-                                "Hope you're having fun!       "
-                                "                              "
-                                "- Chris";
-const unsigned char* movedText = 
-                                "Hey, you put me on another    "
-                                "screen! Cool!";
+void lookup_ptr_data() {
+    bank_push(currentWorldId);
+    ptrTextData = (unsigned int)map_0_text_lookup_address;
+    ptrTextData += 
+        (currentMap[MAP_DATA_EXTRA_START + ((lastPlayerSpriteCollisionId<<2)+1)]) +
+        ((currentMap[MAP_DATA_EXTRA_START + ((lastPlayerSpriteCollisionId<<2)+2)]) << 8);
+    textBankNum = currentMap[MAP_DATA_EXTRA_START + ((lastPlayerSpriteCollisionId<<2))];
+    bank_pop();
+}
+
+CODE_BANK(PRG_BANK_PLAYER_SPRITE);
+
 
 // NOTE: This uses tempChar1 through tempChar3; the caller must not use these.
 void update_player_sprite(void) {
@@ -476,12 +479,8 @@ void handle_player_sprite_collision(void) {
 
                 if (controllerState & PAD_A && !(lastControllerState & PAD_A)) {
                     // Show the text for the player on the first screen
-                    if (playerOverworldPosition == 0) {
-                        trigger_game_text(introductionText);
-                    } else {
-                        // If it's on another screen, show some different text :)
-                        trigger_game_text(movedText);
-                    }
+                    lookup_ptr_data();
+                    trigger_game_text_banked(ptrTextData, textBankNum);
                 }
                 break;
 

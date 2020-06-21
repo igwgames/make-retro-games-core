@@ -6,6 +6,7 @@ const fs = require('fs'),
 // NOTE: This bank needs to line up with the rest of the game!
 // The sprite collision stuff can't afford to be constantly swapping.
 const MAX_MAPS = 6,
+    TEXT_BANK = 0x07,
     FIRST_MAP = 0x08,
     FIRST_SPRITE_CHR_BANK = 0x10;
 
@@ -22,6 +23,7 @@ let spawnMapId = 0,
 // Get exactly the amount of data we need; pad up as needed.
 for (var i = 0; i != MAX_MAPS; i++) {
     if (levelData[i]) {
+        levelData[i].origId = i;
         updatedLevelData.push(levelData[i]);
     } else {
         updatedLevelData.push(levelData[0]);
@@ -59,6 +61,7 @@ updatedLevelData.forEach(function(level, val) {
             const metaContent = `
 
 #include "source/library/bank_helpers.h"
+
 CODE_BANK(${(FIRST_MAP + val).toString(16).toUpperCase()});
 
 const unsigned char map_${val}_spritegroups[] = {
@@ -66,6 +69,9 @@ const unsigned char map_${val}_spritegroups[] = {
 };
 
 const unsigned char map_${val}_chr_bank_id = ${tileIndex};
+
+extern const unsigned char* text_dictionary_bank_${(FIRST_MAP+level.origId).toString(16).toUpperCase()};
+const unsigned char** map_${val}_text_lookup_address = &text_dictionary_bank_${(FIRST_MAP+level.origId).toString(16).toUpperCase()};
 CODE_BANK_POP();
             `;
 
@@ -119,6 +125,7 @@ const outputH = `
 
 extern const unsigned char spriteDefinitionGroups[]; 
 extern const unsigned char map_0_chr_bank_id;
+extern const unsigned char* map_0_text_lookup_address;
 extern const unsigned char map_0_spritegroups[];
 `
 

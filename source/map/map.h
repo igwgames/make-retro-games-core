@@ -57,6 +57,8 @@
 // How many tiles are in the map before we start getting into sprite data.
 #define MAP_DATA_TILE_LENGTH 192
 
+#define MAP_DATA_EXTRA_START 224
+
 // The current map; usable for collisions/etc
 extern unsigned char currentMap[256];
 
