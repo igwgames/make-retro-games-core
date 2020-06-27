@@ -42,7 +42,6 @@
 #define SPRITE_TYPE_LOCKED_DOOR 0x06
 #define SPRITE_TYPE_ENDGAME 0x07
 #define SPRITE_TYPE_MONEY 0x08
-#define SPRITE_TYPE_TELEPORT 0x09
 #define SPRITE_TYPE_NPC 0x10
 
 // Use this when a sprite is destroyed - this will skip all logic about the sprite.
