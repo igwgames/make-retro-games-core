@@ -9,7 +9,8 @@
  */
 var VERSION = require('./package.json').version;
 // HACK: Parse text out, render to banks.
-var TEXT_BANK = 7;
+var TEXT_BANK = 7,
+    FIRST_MAP_BANK = 0x08;
 
 // Expects exactly tmx2c infile outfile (first param is always node)
 if (process.argv.length != 6) {
@@ -30,7 +31,8 @@ var tmxParse = require('tmx-parser'),
     outFile = process.argv[5] + '.c',
     outHeader = process.argv[5] + '.h',
     name = null,
-    outputString = '';
+    outputString = '',
+    levelJson = require('../../../levels/levels.json');
 
 function printDate() {
     return '[' + new Date().toUTCString() + '] ';
@@ -161,17 +163,30 @@ tmxParse.parseFile(process.argv[4], function(err, tmxData) {
                 roomSpriteData.push(255);
             }   
             for (var i = 0; i != 8; i++) {
-                var prop = `tile-${x}-${y}--sprite-0${i}--npc-text`,
-                    propTXT = 'bank_' + process.argv[2] + '__' + prop.replace(/-/g, '_');
-                if (tmxData.properties[prop]) {
+                var npcTextProp = `tile-${x}-${y}--sprite-0${i}--npc-text`,
+                    teleportPropPre = `tile-${x}-${y}--sprite-0${i}--teleport-`,
+                    teleportPropMapId = teleportPropPre + 'map-id',
+                    teleportPropScreenId = teleportPropPre + 'screen-id',
+                    teleportPropScreenTileX = teleportPropPre + 'screen-tile-x',
+                    teleportPropScreenTileY = teleportPropPre + 'screen-tile-y',
+                    propTXT = 'bank_' + process.argv[2] + '__' + npcTextProp.replace(/-/g, '_');
+                if (tmxData.properties[npcTextProp]) {
 
-                    textDictionary[propTXT] = tmxData.properties[prop];
+                    textDictionary[propTXT] = tmxData.properties[npcTextProp];
                     extendedSpriteData.push(TEXT_BANK);
                     extendedSpriteData.push(`${propTXT}_lo`);
                     extendedSpriteData.push(`${propTXT}_hi`);
                     extendedSpriteData.push(0);
+                } else if (tmxData.properties[teleportPropMapId]) {
+                    var levelId = levelJson.findIndex(val => val.id === tmxData.properties[teleportPropMapId]);
+                    if (levelId === null) {
+                        console.warn('Unable to find level - warp on (' + x + ',' + y + ') disabled!', tmxData.properties[teleportPropMapId]);
+                        extendedSpriteData.push(0, 0, 0, 0);
+                    } else {
+                        extendedSpriteData.push(FIRST_MAP_BANK + levelId, tmxData.properties[teleportPropScreenId], tmxData.properties[teleportPropScreenTileX], tmxData.properties[teleportPropScreenTileY]);
+                    }
                 } else {
-                    extendedSpriteData.push(TEXT_BANK, 0, 0, 0);
+                    extendedSpriteData.push(0, 0, 0, 0);
                 }
             }
             

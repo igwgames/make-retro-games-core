@@ -23,6 +23,8 @@ ZEROPAGE_DEF(int, playerYVelocity);
 ZEROPAGE_DEF(unsigned char, playerControlsLockTime);
 ZEROPAGE_DEF(unsigned char, playerInvulnerabilityTime);
 ZEROPAGE_DEF(unsigned char, playerDirection);
+ZEROPAGE_DEF(unsigned char, teleportCooldownTime);
+unsigned char teleportDestinationPointer;
 
 // Huge pile of temporary variables
 #define rawXPosition tempChar1
@@ -348,6 +350,11 @@ void test_player_tile_collision(void) {
 
 #define currentMapSpriteIndex tempChar1
 void handle_player_sprite_collision(void) {
+
+    if (teleportCooldownTime != 0) {
+        --teleportCooldownTime;
+    }
+
     // We store the last sprite hit when we update the sprites in `map_sprites.c`, so here all we have to do is react to it.
     if (lastPlayerSpriteCollisionId != NO_SPRITE_HIT) {
         currentMapSpriteIndex = lastPlayerSpriteCollisionId<<MAP_SPRITE_DATA_SHIFT;
@@ -420,17 +427,69 @@ void handle_player_sprite_collision(void) {
             case SPRITE_TYPE_DOOR: 
                 // Doors without locks are very simple - they just open! Hide the sprite until the user comes back...
                 // note that we intentionally *don't* store this state, so it comes back next time.
-                currentMapSpriteData[(currentMapSpriteIndex) + MAP_SPRITE_DATA_POS_TYPE] = SPRITE_TYPE_OFFSCREEN;
+                currentMapSpriteData[(currentMapSpriteIndex) + MAP_SPRITE_DATA_POS_TILE_ID] = SPRITE_TILE_ID_OFFSCREEN;
+                currentMapSpriteData[(currentMapSpriteIndex) + MAP_SPRITE_DATA_POS_SIZE_PALETTE] = SPRITE_SIZE_8PX_8PX;
+
+
+                // If there's a value in the first byte of this, it probably has a teleport attached. Prepare to launch the player somewhere
+                if (currentMap[MAP_DATA_EXTRA_START + ((lastPlayerSpriteCollisionId<<2))] != 0) {
+
+
+                    // If we set a cooldown time, don't allow warping. This allows us to re-spawn the user into the doorway
+                    // in the other map without them immediately trying to teleport again.
+                    if (teleportCooldownTime != 0) {
+                        break;
+                    }
+
+                    // Next, figure out if the player is completely within the tile, and if so, teleport them.
+                    // Note that this isn't a normal collision test, so don't try to reuse it as one ;)
+                    
+                    // Calculate position of this sprite...
+                    tempSpriteCollisionX = ((currentMapSpriteData[currentMapSpriteIndex + MAP_SPRITE_DATA_POS_X]) + ((currentMapSpriteData[currentMapSpriteIndex + MAP_SPRITE_DATA_POS_X + 1]) << 8));
+                    tempSpriteCollisionY = ((currentMapSpriteData[currentMapSpriteIndex + MAP_SPRITE_DATA_POS_Y]) + ((currentMapSpriteData[currentMapSpriteIndex + MAP_SPRITE_DATA_POS_Y + 1]) << 8));
+
+                    // Test to see if the sprite is completely contained within the boundaries of this sprite. 
+                    // To make it a little loose, we make the sprite look like it is 2 pixels wider on all sides. 
+                    // (subtract 2 from x and y positions for comparison, then add 2 to the width and height.)
+                    if (
+                        playerXPosition > tempSpriteCollisionX - (2 << PLAYER_POSITION_SHIFT) &&
+                        playerXPosition + PLAYER_WIDTH_EXTENDED < tempSpriteCollisionX + (18 << PLAYER_POSITION_SHIFT) &&
+                        playerYPosition > tempSpriteCollisionY - (2 << PLAYER_POSITION_SHIFT) &&
+                        playerYPosition + PLAYER_HEIGHT_EXTENDED < tempSpriteCollisionY + (18 << PLAYER_POSITION_SHIFT)
+                    ) {
+                        // Okay, we are going to warp the user!
+
+                        // Swap worlds
+                        currentWorldId = currentMap[MAP_DATA_EXTRA_START + ((lastPlayerSpriteCollisionId<<2))];
+                        
+                        // Look up what world map tile to place the player on, from our big table, and switch to that tile.
+                        playerOverworldPosition = currentMap[MAP_DATA_EXTRA_START + ((lastPlayerSpriteCollisionId<<2)) + 1];
+                        
+                        // Set our cooldown timer, so when the user shows up on the new map inside the door, they are not teleported.
+                        teleportCooldownTime = TELEPORT_COOLDOWN_TIME;
+                        // Switch to a new gameState that tells our game to animate your transition into this new world.
+                        gameState = GAME_STATE_TELEPORTING;
+                        // Will use this later to figure out the player's x/y coords
+                        teleportDestinationPointer = lastPlayerSpriteCollisionId<<2;
+
+                    }
+                }
+
+
+
                 break;
             case SPRITE_TYPE_LOCKED_DOOR:
                 // First off, do you have a key? If so, let's just make this go away...
                 if (playerKeyCount > 0) {
                     playerKeyCount--;
-                    currentMapSpriteData[(currentMapSpriteIndex) + MAP_SPRITE_DATA_POS_TYPE] = SPRITE_TYPE_OFFSCREEN;
+                    currentMapSpriteData[(currentMapSpriteIndex) + MAP_SPRITE_DATA_POS_TILE_ID] = SPRITE_TILE_ID_OFFSCREEN;
+                    // Switch it to a reuglar door, to take advantage of the teleport logic in that area.
+                    currentMapSpriteData[(currentMapSpriteIndex) + MAP_SPRITE_DATA_POS_TYPE] = SPRITE_TYPE_DOOR;
+                    currentMapSpriteData[(currentMapSpriteIndex) + MAP_SPRITE_DATA_POS_SIZE_PALETTE] = SPRITE_SIZE_8PX_8PX;
+
 
                     // Mark the door as gone, so it doesn't come back.
                     currentMapSpritePersistance[playerOverworldPosition] |= bitToByte[lastPlayerSpriteCollisionId];
-
                     break;
                 }
                 // So you don't have a key...

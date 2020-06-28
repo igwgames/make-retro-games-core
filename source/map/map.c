@@ -62,7 +62,6 @@ void init_map(void) {
     load_tile_palette();
 
     // Also set the palettes to the in-game palettes.
-    // pal_bg(mainBgPalette);
     pal_spr(mainSpritePalette);
 
     load_tile_specifics();
@@ -104,7 +103,14 @@ void load_sprites(void) {
         spritePosition = currentMap[(MAP_DATA_TILE_LENGTH) + (i<<1)];
 
 
-        if (spritePosition != 255 && !(currentMapSpritePersistance[playerOverworldPosition] & bitToByte[i])) {
+        if (spritePosition != 255) {
+
+            if ((currentMapSpritePersistance[playerOverworldPosition] & bitToByte[i])) {
+                if (spriteDefinitions[spriteDefinitionIndex + SPRITE_DEF_POSITION_TYPE] != SPRITE_TYPE_LOCKED_DOOR) {
+                    currentMapSpriteData[mapSpriteDataIndex + MAP_SPRITE_DATA_POS_TYPE] = SPRITE_TYPE_OFFSCREEN;
+                    continue;
+                }
+            }
 
             // Get X converted to our extended 16-bit int size.
             currentValue = (spritePosition & 0x0f) << 8;
@@ -129,6 +135,15 @@ void load_sprites(void) {
             currentMapSpriteData[mapSpriteDataIndex + MAP_SPRITE_DATA_POS_MOVEMENT_TYPE] = spriteDefinitions[spriteDefinitionIndex + SPRITE_DEF_POSITION_MOVEMENT_TYPE];
             currentMapSpriteData[mapSpriteDataIndex + MAP_SPRITE_DATA_POS_MOVE_SPEED] = spriteDefinitions[spriteDefinitionIndex + SPRITE_DEF_POSITION_MOVE_SPEED];
             currentMapSpriteData[mapSpriteDataIndex + MAP_SPRITE_DATA_POS_DAMAGE] = spriteDefinitions[spriteDefinitionIndex + SPRITE_DEF_POSITION_DAMAGE];
+
+            // If we get here, we can currently assume this is a locked door. So, turn it into a regular door, and remove its tile.
+            if ((currentMapSpritePersistance[playerOverworldPosition] & bitToByte[i])) {
+                currentMapSpriteData[mapSpriteDataIndex + MAP_SPRITE_DATA_POS_TILE_ID] = SPRITE_TILE_ID_OFFSCREEN;
+                currentMapSpriteData[mapSpriteDataIndex + MAP_SPRITE_DATA_POS_TYPE] = SPRITE_TYPE_DOOR;
+                currentMapSpriteData[mapSpriteDataIndex + MAP_SPRITE_DATA_POS_SIZE_PALETTE] = SPRITE_SIZE_8PX_8PX;
+
+            }
+
 
         } else {
             // Go away
@@ -539,20 +554,29 @@ void draw_current_map_to_d(void) {
 
 // A quick, low-tech glamour-free way to transition between screens.
 void do_fade_screen_transition(void) {
+
+
+    fade_out_fast();
+    if (gameState == GAME_STATE_TELEPORTING) {
+        playerXPosition = currentMap[MAP_DATA_EXTRA_START + 2 + teleportDestinationPointer]<<(4 + PLAYER_POSITION_SHIFT);
+        playerYPosition = ((unsigned int)currentMap[MAP_DATA_EXTRA_START + 3 + teleportDestinationPointer]<<(4 + PLAYER_POSITION_SHIFT)) + ((unsigned int)HUD_PIXEL_HEIGHT << PLAYER_POSITION_SHIFT);
+    }
     load_map();
     load_sprites();
     clear_asset_table(1);
-    fade_out_fast();
     
-    // Now that the screen is clear, migrate the player's sprite a bit..
-    if (playerDirection == SPRITE_DIRECTION_LEFT) {
-        playerXPosition = (SCREEN_EDGE_RIGHT << PLAYER_POSITION_SHIFT);
-    } else if (playerDirection == SPRITE_DIRECTION_RIGHT) {
-        playerXPosition = (SCREEN_EDGE_LEFT << PLAYER_POSITION_SHIFT);
-    } else if (playerDirection == SPRITE_DIRECTION_UP) {
-        playerYPosition = (SCREEN_EDGE_BOTTOM << PLAYER_POSITION_SHIFT);
-    } else if (playerDirection == SPRITE_DIRECTION_DOWN) {
-        playerYPosition = (SCREEN_EDGE_TOP << PLAYER_POSITION_SHIFT);
+    if (gameState == GAME_STATE_SCREEN_SCROLL) {
+
+        // Now that the screen is clear, migrate the player's sprite a bit..
+        if (playerDirection == SPRITE_DIRECTION_LEFT) {
+            playerXPosition = (SCREEN_EDGE_RIGHT << PLAYER_POSITION_SHIFT);
+        } else if (playerDirection == SPRITE_DIRECTION_RIGHT) {
+            playerXPosition = (SCREEN_EDGE_LEFT << PLAYER_POSITION_SHIFT);
+        } else if (playerDirection == SPRITE_DIRECTION_UP) {
+            playerYPosition = (SCREEN_EDGE_BOTTOM << PLAYER_POSITION_SHIFT);
+        } else if (playerDirection == SPRITE_DIRECTION_DOWN) {
+            playerYPosition = (SCREEN_EDGE_TOP << PLAYER_POSITION_SHIFT);
+        }
     }
     // Actually move the sprite too, since otherwise this won't happen until after we un-blank the screen.
     banked_call(PRG_BANK_PLAYER_SPRITE, update_player_sprite);
@@ -560,6 +584,14 @@ void do_fade_screen_transition(void) {
     // Draw the updated map to the screen...
     draw_current_map_to_nametable(NAMETABLE_A, NAMETABLE_A_ATTRS, 0);
     
+    set_tempChar6_to_tile_chr_bank();
+    currentMapTilesetId = tempChar6;
+    set_chr_bank_0(tempChar6);
+    load_tile_palette();
+
+    // Also set the palettes to the in-game palettes.
+    pal_spr(mainSpritePalette);
+
     // Update sprites once to make sure we don't show a flash of the old sprite positions.
     banked_call(PRG_BANK_MAP_SPRITES, update_map_sprites);
     load_tile_specifics();

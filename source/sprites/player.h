@@ -37,6 +37,7 @@ ZEROPAGE_EXTERN(int, playerYPosition);
 ZEROPAGE_EXTERN(int, playerXVelocity);
 ZEROPAGE_EXTERN(int, playerYVelocity);
 ZEROPAGE_EXTERN(unsigned char, playerDirection);
+extern unsigned char teleportDestinationPointer;
 
 // Helper macro to convert the player's X and Y position into a position on the map
 #define PLAYER_MAP_POSITION(xPos, yPos) (xPos>>4) + (yPos & 0xf0)

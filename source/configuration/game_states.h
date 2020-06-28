@@ -6,6 +6,7 @@
 #define GAME_STATE_POST_TITLE       20
 #define GAME_STATE_RUNNING          50
 #define GAME_STATE_SHOWING_TEXT     60
+#define GAME_STATE_TELEPORTING      70
 #define GAME_STATE_PAUSED           100
 #define GAME_STATE_SCREEN_SCROLL    150
 #define GAME_STATE_GAME_OVER        201

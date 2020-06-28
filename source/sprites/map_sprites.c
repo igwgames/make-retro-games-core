@@ -266,6 +266,9 @@ void update_map_sprites(void) {
                 tempMapSpriteIndex,
                 oamMapSpriteIndex
             );
+            oam_spr(SPRITE_OFFSCREEN, SPRITE_OFFSCREEN, 0, 0, oamMapSpriteIndex + 4);
+            oam_spr(SPRITE_OFFSCREEN, SPRITE_OFFSCREEN, 0, 0, oamMapSpriteIndex + 8);
+            oam_spr(SPRITE_OFFSCREEN, SPRITE_OFFSCREEN, 0, 0, oamMapSpriteIndex + 12);
         } else if (currentSpriteSize == SPRITE_SIZE_16PX_16PX) {
             oam_spr(
                 sprX8,

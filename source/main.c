@@ -107,6 +107,11 @@ void main(void) {
                 // If you don't like the screen scrolling transition, you can replace the transition with `do_fade_screen_transition`
                 banked_call(PRG_BANK_MAP_LOGIC, do_scroll_screen_transition);
                 break;
+            case GAME_STATE_TELEPORTING:
+                oam_hide_rest(FIRST_ENEMY_SPRITE_OAM_INDEX);
+                banked_call(PRG_BANK_MAP_LOGIC, do_fade_screen_transition);
+
+                break;
             case GAME_STATE_SHOWING_TEXT:
                 banked_call(PRG_BANK_GAME_TEXT, draw_game_text);
                 gameState = GAME_STATE_RUNNING;

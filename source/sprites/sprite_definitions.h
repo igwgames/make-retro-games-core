@@ -69,4 +69,6 @@
 #define SPRITE_DEF_POSITION_MOVE_SPEED      6
 #define SPRITE_DEF_POSITION_DAMAGE          7
 
+#define TELEPORT_COOLDOWN_TIME 60
+
 extern const unsigned char spriteDefinitions[];
