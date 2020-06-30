@@ -50,7 +50,7 @@ unsigned char assetTable[0x38];
 
 unsigned char currentMapSpriteData[(16 * MAP_MAX_SPRITES)];
 
-unsigned char currentMapSpritePersistance[64];
+WRAM_ARRAY_DEF(unsigned char, currentMapSpritePersistance, 512);
 
 unsigned char mapScreenBuffer[0x55];
 
@@ -104,8 +104,9 @@ void load_sprites(void) {
 
 
         if (spritePosition != 255) {
+            currentValue = ((currentWorldId - FIRST_MAP_BANK_ID) << 6) + playerOverworldPosition;
 
-            if ((currentMapSpritePersistance[playerOverworldPosition] & bitToByte[i])) {
+            if ((currentMapSpritePersistance[currentValue] & bitToByte[i])) {
                 if (spriteDefinitions[spriteDefinitionIndex + SPRITE_DEF_POSITION_TYPE] != SPRITE_TYPE_LOCKED_DOOR) {
                     currentMapSpriteData[mapSpriteDataIndex + MAP_SPRITE_DATA_POS_TYPE] = SPRITE_TYPE_OFFSCREEN;
                     continue;
@@ -137,7 +138,8 @@ void load_sprites(void) {
             currentMapSpriteData[mapSpriteDataIndex + MAP_SPRITE_DATA_POS_DAMAGE] = spriteDefinitions[spriteDefinitionIndex + SPRITE_DEF_POSITION_DAMAGE];
 
             // If we get here, we can currently assume this is a locked door. So, turn it into a regular door, and remove its tile.
-            if ((currentMapSpritePersistance[playerOverworldPosition] & bitToByte[i])) {
+            currentValue = ((currentWorldId - FIRST_MAP_BANK_ID) << 6) + playerOverworldPosition;
+            if ((currentMapSpritePersistance[currentValue] & bitToByte[i])) {
                 currentMapSpriteData[mapSpriteDataIndex + MAP_SPRITE_DATA_POS_TILE_ID] = SPRITE_TILE_ID_OFFSCREEN;
                 currentMapSpriteData[mapSpriteDataIndex + MAP_SPRITE_DATA_POS_TYPE] = SPRITE_TYPE_DOOR;
                 currentMapSpriteData[mapSpriteDataIndex + MAP_SPRITE_DATA_POS_SIZE_PALETTE] = SPRITE_SIZE_8PX_8PX;

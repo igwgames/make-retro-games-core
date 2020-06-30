@@ -67,8 +67,8 @@ extern unsigned char currentMapSpriteData[(16 * MAP_MAX_SPRITES)];
 
 // This stores the state for the 8 sprites on every map screen. Each screen is represented by one byte.
 // We do this by storing 1 bit for each sprite - 0 if not collected, 1 if it collected. We don't re-spawn
-// collected sprites.
-extern unsigned char currentMapSpritePersistance[64];
+// collected sprites. 64 bytes per map, maxing at 8 maps.
+WRAM_ARRAY_EXTERN(unsigned char, currentMapSpritePersistance, 512);
 
 // The player's position on the world map. 0-7 are first row, 8-15 are 2nd, etc...
 ZEROPAGE_EXTERN(unsigned char, playerOverworldPosition);

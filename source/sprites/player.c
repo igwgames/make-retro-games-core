@@ -43,6 +43,7 @@ unsigned char teleportDestinationPointer;
 
 #define textBankNum tempChar8
 #define ptrTextData tempInt1
+#define spritePersistanceLocation tempInt1
 
 void lookup_ptr_data() {
     bank_push(currentWorldId);
@@ -373,7 +374,8 @@ void handle_player_sprite_collision(void) {
                     sfx_play(SFX_HEART, SFX_CHANNEL_3);
 
                     // Mark the sprite as collected, so we can't get it again.
-                    currentMapSpritePersistance[playerOverworldPosition] |= bitToByte[lastPlayerSpriteCollisionId];
+                    spritePersistanceLocation = ((currentWorldId - FIRST_MAP_BANK_ID) << 6) + playerOverworldPosition;
+                    currentMapSpritePersistance[spritePersistanceLocation] |= bitToByte[lastPlayerSpriteCollisionId];
                 }
                 break;
             case SPRITE_TYPE_KEY:
@@ -384,7 +386,8 @@ void handle_player_sprite_collision(void) {
                     sfx_play(SFX_KEY, SFX_CHANNEL_3);
 
                     // Mark the sprite as collected, so we can't get it again.
-                    currentMapSpritePersistance[playerOverworldPosition] |= bitToByte[lastPlayerSpriteCollisionId];
+                    spritePersistanceLocation = ((currentWorldId - FIRST_MAP_BANK_ID) << 6) + playerOverworldPosition;
+                    currentMapSpritePersistance[spritePersistanceLocation] |= bitToByte[lastPlayerSpriteCollisionId];
                 }
                 break;
             case SPRITE_TYPE_REGULAR_ENEMY:
@@ -489,7 +492,8 @@ void handle_player_sprite_collision(void) {
 
 
                     // Mark the door as gone, so it doesn't come back.
-                    currentMapSpritePersistance[playerOverworldPosition] |= bitToByte[lastPlayerSpriteCollisionId];
+                    spritePersistanceLocation = ((currentWorldId - FIRST_MAP_BANK_ID) << 6) + playerOverworldPosition;
+                    currentMapSpritePersistance[spritePersistanceLocation] |= bitToByte[lastPlayerSpriteCollisionId];
                     break;
                 }
                 // So you don't have a key...

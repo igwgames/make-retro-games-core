@@ -195,6 +195,23 @@ clearRAM:
     sta $500,x
     sta $600,x
     sta $700,x
+	; Clear WRAM area. SRAM is 7k
+	sta $6000,x
+	sta $6100,x
+	sta $6200,x
+	sta $6300,x
+	sta $6400,x
+	sta $6500,x
+	sta $6600,x
+	sta $6700,x
+	sta $6800,x
+	sta $6900,x
+	sta $6a00,x
+	sta $6b00,x
+	sta $6c00,x
+	sta $6d00,x
+	sta $6e00,x
+	sta $6f00,x
     inx
     bne @1
 
