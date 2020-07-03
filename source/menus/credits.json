@@ -94,5 +94,18 @@
             "license": "CC-BY 4.0",
             "licenseUrl": "https://creativecommons.org/licenses/by/4.0/"
         }
+    },
+    {
+        "librarySourceId": "early-80s-arcade",
+        "who": "RefreshGames",
+        "what": "Early 80s Sprites",
+        "readonly": true,
+        "required": true,
+        "fullAuthor": {
+            "name": "RefreshGames",
+            "url": "https://opengameart.org/content/early-80s-arcade-pixel-art-dungeonsslimes-walls-power-ups-etc",
+            "license": "Public Domain",
+            "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/"
+        }
     }
 ]
