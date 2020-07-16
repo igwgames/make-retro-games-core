@@ -24,5 +24,21 @@
         "type": "sprite",
         "paletteFile": "graphics/palettes/main_sprite_npc2.pal",
         "firstDefinitionId": 5
+    },
+    {
+        "id": "72d33c6f-a651-4c8f-8f73-ffa9beb9232e",
+        "originalId": "early-80s-arcade-group-1",
+        "originalParentId": "early-80s-arcade",
+        "name": "Early 80s Arcade Sprites",
+        "type": "sprite",
+        "authorInfo": {
+            "name": "RefreshGames",
+            "url": "https://opengameart.org/content/early-80s-arcade-pixel-art-dungeonsslimes-walls-power-ups-etc",
+            "license": "Public Domain",
+            "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/"
+        },
+        "firstDefinitionId": 18,
+        "chrFile": "graphics/72d33c6f-a651-4c8f-8f73-ffa9beb9232e.chr",
+        "paletteFile": "graphics/72d33c6f-a651-4c8f-8f73-ffa9beb9232e.pal"
     }
 ]
