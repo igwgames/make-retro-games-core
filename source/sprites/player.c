@@ -521,25 +521,8 @@ void handle_player_sprite_collision(void) {
                 gameState = GAME_STATE_CREDITS;
                 break;
             case SPRITE_TYPE_NPC:
-                // Okay, we collided with this NPC before we calculated the player's movement. After being moved, does the 
-                // new player position also collide? If so, stop it. Else, let it go.
 
-                // Calculate position...
-                tempSpriteCollisionX = ((currentMapSpriteData[currentMapSpriteIndex + MAP_SPRITE_DATA_POS_X]) + ((currentMapSpriteData[currentMapSpriteIndex + MAP_SPRITE_DATA_POS_X + 1]) << 8));
-                tempSpriteCollisionY = ((currentMapSpriteData[currentMapSpriteIndex + MAP_SPRITE_DATA_POS_Y]) + ((currentMapSpriteData[currentMapSpriteIndex + MAP_SPRITE_DATA_POS_Y + 1]) << 8));
-                // Are we colliding?
-                // NOTE: We take a bit of a shortcut here and assume all NPCs are 16x16 (the hard-coded 16 value below)
-                if (
-                    playerXPosition < tempSpriteCollisionX + (16 << PLAYER_POSITION_SHIFT) &&
-                    playerXPosition + PLAYER_WIDTH_EXTENDED > tempSpriteCollisionX &&
-                    playerYPosition < tempSpriteCollisionY + (16 << PLAYER_POSITION_SHIFT) &&
-                    playerYPosition + PLAYER_HEIGHT_EXTENDED > tempSpriteCollisionY
-                ) {
-                    playerXPosition -= playerXVelocity;
-                    playerYPosition -= playerYVelocity;
-                    playerControlsLockTime = 0;
-                }
-
+                // No collision testing, just let the user talk.
                 if (controllerState & PAD_A && !(lastControllerState & PAD_A)) {
                     // Show the text for the player on the first screen
                     lookup_ptr_data();
