@@ -10,15 +10,16 @@ jobs:
       # - name: Build
       # uses: ./tools/github-action-build
       #  id: nesrom
-      - run: cd /tools/tmx2c/src && npm install
+      - run: pwd && ls
+      - run: cd tools/tmx2c/src && npm install
         name: Npm install 1
-      - run: cd /tools/sprite_def2img/src && npm install
+      - run: cd tools/sprite_def2img/src && npm install
         name: Npm install 2
-      - run: cd /tools/chr2img/src && npm install
+      - run: cd tools/chr2img/src && npm install
         name: Npm install 3
-      - run: cd /tools/cc65 && mkdir bin && cd bin && wget https://cpprograms-nes-games-https.s3.amazonaws.com/cc65-bin.zip && unzip cc65-bin.zip
+      - run: cd tools/cc65 && mkdir bin && cd bin && wget https://cpprograms-nes-games-https.s3.amazonaws.com/cc65-bin.zip && unzip cc65-bin.zip
         name: cc65 setup
-      - run: cd / && CI_BUILD=true make
+      - run: CI_BUILD=true make
         name: Rom Build
       - run: mkdir $GITHUB_WORKSPACE/rom || echo "Dir exists" 
         name: Rom prep
