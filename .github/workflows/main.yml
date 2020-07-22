@@ -17,7 +17,7 @@ jobs:
         name: Npm install 2
       - run: cd tools/chr2img/src && npm install
         name: Npm install 3
-      - run: cd tools && mkdir cc65 || echo "Dir Exists" && cd cc65 && wget https://cpprograms-nes-games-https.s3.amazonaws.com/cc65setup.zip && unzip cc65setup.zip
+      - run: cd tools && mkdir cc65 || echo "Dir Exists" && cd cc65 && wget https://cpprograms-nes-games-https.s3.amazonaws.com/cc65setup.zip && unzip cc65setup.zip && chmod -R 755 .
         name: cc65 setup
       - run: CI_BUILD=true make
         name: Rom Build
