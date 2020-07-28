@@ -19,11 +19,18 @@
 // by to get to the real location. (Think about this as dividing by 2^(this number))
 #define PLAYER_POSITION_SHIFT 4
 
+// This is used to help nudge the player when their velocity is 0 in a dimension.
+#define PLAYER_POSITION_TILE_MASK 0x00f0
+#define PLAYER_POSITION_TILE_MASK_MIDDLE 0x0080
+// On the Y axis, due to some oddities in the engine, we have to nudge a little extra
+#define PLAYER_POSITION_TILE_MASK_EXTRA_NUDGE 0x10
+
 // Handles player movement - we start slow and accelerate/decelerate up to a max speed. As a player,
 // you probably won't notice this outright, but it feels a lot more natural like this.
 // NOTE: The max velocity needs to be evenly divided by the acceleration. (Eg 20/4 = 5)
 #define PLAYER_MAX_VELOCITY RI_PLAYER_MOVEMENT_SPEED_INT // Max speed of the player; we won't let you go past this.
 #define PLAYER_VELOCITY_ACCEL 4 // How quickly do we get up to max velocity?
+#define PLAYER_VELOCITY_NUDGE 4 // How quickly do we "nudge" the player onto the grid? THIS MUST BE A MULTIPLE OF THE ABOVE NUMBER
 
 // If the player is damaged, how long do we lock their controls such that they bounce backwards?
 #define PLAYER_DAMAGE_CONTROL_LOCK_TIME 20
