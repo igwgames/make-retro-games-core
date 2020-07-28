@@ -4,10 +4,6 @@
   <property name="test" value="asdfasdfasfasfasfasfasdfasfasfasdf"/>
   <property name="tile-0-0--sprite-00--npc-text" value="MAN MOLE! MOLE MAN! WHO IS MOLE MAN? MAN MOLE IS KING! LET THE POTATOES TAKE OVER MANHATTAN! I AM STILL TALKING? WHO ALLOWED ME TO? BANANAS SHOULD NOT BE USED TO FEED GODZILLA. HE poops. The end.               Testing"/>
   <property name="tile-0-0--sprite-01--npc-text" value="Hello there! I am a potato. Please breathe my outbreathe"/>
-  <property name="tile-0-0--sprite-06--teleport-map-id" value="baf32c37-b3e5-4530-bdb3-79665e77d430"/>
-  <property name="tile-0-0--sprite-06--teleport-screen-id" type="int" value="18"/>
-  <property name="tile-0-0--sprite-06--teleport-screen-tile-x" type="int" value="4"/>
-  <property name="tile-0-0--sprite-06--teleport-screen-tile-y" type="int" value="6"/>
   <property name="tile-1-1--sprite-01--npc-text" value="I am on tile 9."/>
  </properties>
  <tileset firstgid="1" name="Overworld Tiles" tilewidth="16" tileheight="16" tilecount="256" columns="8">
