@@ -206,15 +206,15 @@ void handle_player_movement(void) {
             }
         }
 
-        // Now, adjust to the grid as possible, if the player isn't pressing a direction.
-        if (frameCount & 0x01) {// Do this every other frame, to make it more subtle
+        // Now, slowly adjust to the grid as possible, if the player isn't pressing a direction. 
+        #if PLAYER_MOVEMENT_STYLE == MOVEMENT_STYLE_GRID
             if (playerYVelocity != 0 && playerXVelocity == 0 && (controllerState & (PAD_LEFT | PAD_RIGHT)) == 0) {
                 if ((char)((playerXPosition + PLAYER_POSITION_TILE_MASK_MIDDLE) & PLAYER_POSITION_TILE_MASK) > (char)(PLAYER_POSITION_TILE_MASK_MIDDLE)) {
                     playerXVelocity = 0-PLAYER_VELOCITY_NUDGE;
                 } else if ((char)((playerXPosition + PLAYER_POSITION_TILE_MASK_MIDDLE) & PLAYER_POSITION_TILE_MASK) < (char)(PLAYER_POSITION_TILE_MASK_MIDDLE)) {
                     playerXVelocity = PLAYER_VELOCITY_NUDGE;
                 } // If equal, do nothing. That's our goal.
-            } 
+            }
 
             if (playerXVelocity != 0 && playerYVelocity == 0 && (controllerState & (PAD_UP | PAD_DOWN)) == 0) {
                 if ((char)((playerYPosition + PLAYER_POSITION_TILE_MASK_MIDDLE + PLAYER_POSITION_TILE_MASK_EXTRA_NUDGE) & PLAYER_POSITION_TILE_MASK) > (char)(PLAYER_POSITION_TILE_MASK_MIDDLE)) {
@@ -223,7 +223,7 @@ void handle_player_movement(void) {
                     playerYVelocity = PLAYER_VELOCITY_NUDGE;
                 } // If equal, do nothing. That's our goal.
             }
-        }
+        #endif
     }
 
     // While we're at it, tick down the invulnerability timer if needed
@@ -339,6 +339,7 @@ void test_player_tile_collision(void) {
 
         collisionTempYBottom = ((collisionTempYInt) >> PLAYER_POSITION_SHIFT) - HUD_PIXEL_HEIGHT;
         collisionTempXRight = ((collisionTempXInt) >> PLAYER_POSITION_SHIFT);
+        // The lowest spot we can test collision is at pixel 192 (the 12th 16x16 tile). If we're past that, bump ourselves back.
         if (collisionTempYBottom > 190) {
             collisionTempYBottom = 190;
         }
