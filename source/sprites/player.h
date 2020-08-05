@@ -15,7 +15,7 @@
 #define MOVEMENT_STYLE_GRID 1
 
 // This define changes how the player moves to be one of the two movement styles above.
-#define PLAYER_MOVEMENT_STYLE MOVEMENT_STYLE_GRID
+#define PLAYER_MOVEMENT_STYLE RI_PLAYER_MOVEMENT_STYLE
 
 // This is the width and height of player as used in collisions. This is shifted by 4 to allow for sub-pixel
 // sizes. (And smoother acceleration/deceleration.) A 16px wide sprite is 256 units here.
