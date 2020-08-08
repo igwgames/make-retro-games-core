@@ -47,11 +47,13 @@ unsigned char teleportDestinationPointer;
 
 void lookup_ptr_data() {
     bank_push(currentWorldId);
+
     ptrTextData = (unsigned int)map_0_text_lookup_address;
     ptrTextData += 
         (currentMap[MAP_DATA_EXTRA_START + ((lastPlayerSpriteCollisionId<<2)+1)]) +
         ((currentMap[MAP_DATA_EXTRA_START + ((lastPlayerSpriteCollisionId<<2)+2)]) << 8);
     textBankNum = currentMap[MAP_DATA_EXTRA_START + ((lastPlayerSpriteCollisionId<<2))];
+    
     bank_pop();
 }
 
