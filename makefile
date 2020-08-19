@@ -124,8 +124,8 @@ temp/map_%_meta.c: levels/levels.json levels/*.tmx
 temp/credits_text.h: source/menus/credits.json
 	$(CREDITS_GENERATOR)
 
-graphics/generated/tiles.png: graphics/49ffda05-2304-48e2-a081-f278fb705024.chr graphics/sprites.chr graphics/palettes/main_bg.pal
-	$(CHR2IMG) graphics/49ffda05-2304-48e2-a081-f278fb705024.chr graphics/palettes/main_bg.pal graphics/generated/tiles.png
+graphics/generated/tiles.png: graphics/tiles.chr graphics/palettes/main_bg.pal
+	$(CHR2IMG) graphics/tiles.chr graphics/palettes/main_bg.pal graphics/generated/tiles.png
 
 # DISABLED: Sprites no longer work quite like this. Needs a major revamp to even make this work.
 # graphics/generated/sprites.png: graphics/tiles.chr graphics/sprites.chr graphics/palettes/main_sprite.pal source/sprites/sprite_definitions.c

@@ -1,14 +1,17 @@
 [
     {
         "id": "8ca72e8e-3d13-4a8f-99ec-37905e3a44a0",
-        "name": "First Sprites",
+        "originalId": "early-80s-arcade-group-1",
+        "originalParentId": "early-80s-arcade",
+        "name": "Early 80s Arcade Sprites",
+        "type": "sprite",
         "authorInfo": {
-            "name": "Stinky Petersen",
-            "url": "http://opengameart.com/blah/",
-            "license": "MIT"
+            "name": "RefreshGames",
+            "url": "https://opengameart.org/content/early-80s-arcade-pixel-art-dungeonsslimes-walls-power-ups-etc",
+            "license": "Public Domain",
+            "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/"
         },
         "chrFile": "graphics/sprites_npc_1.chr",
-        "type": "sprite",
         "paletteFile": "graphics/palettes/main_sprite_npc1.pal",
         "firstDefinitionId": 0
     },
@@ -16,7 +19,7 @@
         "id": "1796b720-cf8d-4eab-9e77-eb65ff4ad679",
         "name": "Dummy Sprites",
         "authorInfo": {
-            "name": "Stinky Petersen 2",
+            "name": "Test Art",
             "url": "http://opengameart.com/blah/",
             "license": "MIT"
         },
@@ -38,7 +41,7 @@
             "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/"
         },
         "firstDefinitionId": 18,
-        "chrFile": "graphics/72d33c6f-a651-4c8f-8f73-ffa9beb9232e.chr",
-        "paletteFile": "graphics/72d33c6f-a651-4c8f-8f73-ffa9beb9232e.pal"
+        "chrFile": "graphics/sprites_npc_1.chr",
+        "paletteFile": "graphics/palettes/main_sprite_npc1.pal"
     }
 ]
