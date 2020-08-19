@@ -2,14 +2,14 @@
 // the credits, and anywhere else you fancy!
 // Values are written in game_info.c
 
-// ----- RETRO INTERACTIVE CODE REPLACEMENT -----
+// ----- MAKERETROGAMES CODE REPLACEMENT -----
 // ----- Changes in this area are discouraged and may be lost! -----
-    #define RI_EDITOR_GAME_NAME "Retro GDE Demo"
+    #define RI_EDITOR_GAME_NAME "MakeRetroGames Demo"
     #define RI_EDITOR_GAME_AUTHOR "YOU!"
     #define RI_GAME_AUTHOR_CONTACT "Tweet at us! @your_twitter"
     #define RI_GAME_YEAR "2020"
     #define RI_DEBUG_MODE_BOOL 1
-// ----- END RETRO INTERACTIVE CODE REPLACEMENT ----- 
+// ----- END MAKERETROGAMES CODE REPLACEMENT ----- 
 
 extern const unsigned char gameName[];
 extern const unsigned char gameAuthor[];

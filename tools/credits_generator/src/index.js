@@ -29,10 +29,10 @@ theString += '';
 
 const fileText = 
 `
-// ----- RETRO INTERACTIVE CODE REPLACEMENT -----
+// ----- MAKERETROGAMES CODE REPLACEMENT -----
 // ----- Changes in this area are discouraged and may be lost! -----
 #define RI_CREDITS_TEXT ${theString}
-// ----- END RETRO INTERACTIVE CODE REPLACEMENT ----- 
+// ----- END MAKERETROGAMES CODE REPLACEMENT -----
 `;
 
 fs.writeFileSync('temp/credits_text.h', fileText);
