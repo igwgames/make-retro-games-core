@@ -22,6 +22,8 @@ void draw_hud(void) {
 }
 
 void update_hud(void) {
+    // Make sure we don't update vram while this is in progress, or we could break something.
+    set_vram_update(NULL);
     // This sets up screenBuffer to print x hearts, then x more empty hearts. 
     // You give it the address, tell it the direction to write, then follow up with
     // Ids, ending with NT_UPD_EOF

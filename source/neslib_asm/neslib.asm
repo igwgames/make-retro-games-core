@@ -29,12 +29,29 @@
 	.export _vram_adr,_vram_put,_vram_fill,_vram_inc,_vram_unrle
 	.export _set_vram_update,_flush_vram_update
 	.export _memcpy,_memfill,_delay
+	.export real_nmi
 
 	.export _split_y,_reset,_wait_for_sprite0_hit
 
 ;NMI handler
 
 nmi:
+	pha 
+	lda <BANK_WRITE_IP
+	cmp #1
+	bne @continue
+		inc BANK_WRITE_IP
+		pla
+		jmp @skip_all ; If we were in the middle of switching banks, skip this nmi. Gross, but effective.
+	@continue:
+	pla
+
+	jsr real_nmi
+	
+	@skip_all:
+	rti
+
+real_nmi:
 	pha
 	txa
 	pha
@@ -143,7 +160,8 @@ nmi:
     lda BP_BANK
     sta NMI_BANK_TEMP
     lda #SOUND_BANK
-    jsr _set_prg_bank
+	sta BP_BANK
+    jsr _set_prg_bank_raw
 
 	;play music, the code is modified to put data into output buffer instead of APU registers
     
@@ -232,14 +250,18 @@ nmi:
 	lda <BUF_400F
 	sta $400F
 
-    lda NMI_BANK_TEMP
-    jsr _set_prg_bank
+	lda NMI_BANK_TEMP
+	sta BP_BANK
+    jsr _set_prg_bank_raw
+
 
 	pla
 	tay
 	pla
 	tax
 	pla
+
+	rts
 
 irq:
 

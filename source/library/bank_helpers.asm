@@ -14,15 +14,33 @@
 .export _set_mirroring
 
 _set_prg_bank:
-    ; Grab old bank and store it temporarily.
-    ldx BP_BANK
+
     ; Store new bank into BP_BANK
     sta BP_BANK
 
-    ; Write it to the reg (destroys a)
-    mmc1_register_write MMC1_PRG
-    txa ; Old bank's back!
+    ; Set a flag for the nmi method to check, on the offchance it catches us-mid-write
+    ldx #1
+    stx BANK_WRITE_IP
 
+    ; Write it to the reg (destroys a)
+    jsr _set_prg_bank_raw
+
+    ; See if nmi ran
+    ldx BANK_WRITE_IP
+    cmp #2
+    bne @no_nmi
+        ; Yep. Need to run nmi once we're done.
+        ldx #0
+        stx BANK_WRITE_IP
+        jsr real_nmi
+    @no_nmi:
+    ; Carry on as we were.
+    ldx #0
+    stx BANK_WRITE_IP
+
+    rts
+_set_prg_bank_raw:
+    mmc1_register_write MMC1_PRG
     rts
 
 _get_prg_bank:

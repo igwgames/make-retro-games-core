@@ -80,6 +80,7 @@ BP_BANK:            .res 1
 BP_BANK_TEMP:       .res 1
 NMI_BANK_TEMP:      .res 1
 FT_TEMP: 			.res 3
+BANK_WRITE_IP:		.res 1
 
 MUSIC_PLAY:			.res 1
 ft_music_addr:		.res 2
