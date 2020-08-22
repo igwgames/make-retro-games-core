@@ -47,6 +47,7 @@
 #define MAP_SPRITE_DATA_POS_HEALTH              7
 #define MAP_SPRITE_DATA_POS_SLIDE_SPEED         7
 #define MAP_SPRITE_DATA_POS_NPC_ID              7
+#define MAP_SPRITE_DATA_POS_MONEY               7
 #define MAP_SPRITE_DATA_POS_TILE_ID             8
 #define MAP_SPRITE_DATA_POS_MOVEMENT_TYPE       9
 #define MAP_SPRITE_DATA_POS_CURRENT_DIRECTION   10

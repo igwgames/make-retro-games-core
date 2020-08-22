@@ -130,10 +130,35 @@ unsigned char test_debug_input(void) {
         } else if (controllerState & PAD_UP && !(lastControllerState & PAD_UP)) {
             if (playerHealth < playerMaxHealth) {
                 ++playerHealth;
+                playerMoneyCount++;
             }
         } else if (controllerState & PAD_DOWN && !(lastControllerState & PAD_DOWN)) {
             if (playerHealth > 1) {
                 --playerHealth;
+            }
+        } else if (controllerState & PAD_A && !(lastControllerState & PAD_A)) {
+            playerMoneyCount += 5;
+            if ((playerMoneyCount & 0x0f) > 0x09) {
+                playerMoneyCount += 6;
+            }
+            if ((playerMoneyCount & 0xf0) > 0x90) {
+                playerMoneyCount += 0x60;
+            }
+
+            if (playerMoneyCount > 0x999) {
+                playerMoneyCount = 0x999;
+            }
+        } else if (controllerState & PAD_B && !(lastControllerState & PAD_B)) {
+            playerMoneyCount -= 5;
+            if ((playerMoneyCount & 0x0f) > 0x09) {
+                playerMoneyCount -= 6;
+            }
+            if ((playerMoneyCount & 0xf0) > 0x90) {
+                playerMoneyCount -= 0x60;
+            }
+            // In this case we probably underflowed, since it's unsigned.
+            if (playerMoneyCount > 0x999) {
+                playerMoneyCount = 0;
             }
         }
     }
@@ -420,6 +445,26 @@ void handle_player_sprite_collision(void) {
                     spritePersistanceLocation = ((currentWorldId - FIRST_MAP_BANK_ID) << 6) + playerOverworldPosition;
                     currentMapSpritePersistance[spritePersistanceLocation] |= bitToByte[lastPlayerSpriteCollisionId];
                 }
+                break;
+            case SPRITE_TYPE_MONEY:
+                playerMoneyCount += currentMapSpriteData[currentMapSpriteIndex + MAP_SPRITE_DATA_POS_MONEY];
+                if ((playerMoneyCount & 0x0f) > 0x09) {
+                    playerMoneyCount += 0x06;
+                }
+                if ((playerMoneyCount & 0xf0) > 0x90) {
+                    playerMoneyCount += 0x60;
+                }
+                if (playerMoneyCount > 0x999) {
+                    playerMoneyCount = 0x999;
+                }
+                sfx_play(SFX_MONEY, SFX_CHANNEL_3);
+
+                currentMapSpriteData[(currentMapSpriteIndex) + MAP_SPRITE_DATA_POS_TYPE] = SPRITE_TYPE_OFFSCREEN;
+                // Mark the sprite as collected, so we can't get it again.
+                spritePersistanceLocation = ((currentWorldId - FIRST_MAP_BANK_ID) << 6) + playerOverworldPosition;
+                currentMapSpritePersistance[spritePersistanceLocation] |= bitToByte[lastPlayerSpriteCollisionId];
+
+
                 break;
             case SPRITE_TYPE_REGULAR_ENEMY:
             case SPRITE_TYPE_INVULNERABLE_ENEMY:

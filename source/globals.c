@@ -10,6 +10,7 @@ ZEROPAGE_DEF(unsigned char, j);
 
 ZEROPAGE_DEF(unsigned char, playerHealth);
 ZEROPAGE_DEF(unsigned char, playerKeyCount);
+ZEROPAGE_DEF(unsigned int, playerMoneyCount);
 ZEROPAGE_DEF(unsigned char, playerMaxHealth);
 ZEROPAGE_DEF(unsigned char, gameState);
 ZEROPAGE_DEF(unsigned char, currentWorldId);
