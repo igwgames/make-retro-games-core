@@ -27,7 +27,7 @@ _set_prg_bank:
 
     ; See if nmi ran
     ldx BANK_WRITE_IP
-    cmp #2
+    cpx #2
     bne @no_nmi
         ; Yep. Need to run nmi once we're done.
         ldx #0
