@@ -19,8 +19,8 @@ void draw_title_screen(void) {
 	clear_screen();
 	oam_clear();
 
-    
-    put_str(NTADR_A(7, 5), gameName);
+	// NOTE: Game name should be exactly 32 characters, with spaces used to center it properly.
+	put_str(NTADR_A(0, 5), gameName);
 	
 	put_str(NTADR_A(2, 26), gameAuthorContact);
 	
