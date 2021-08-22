@@ -62,7 +62,7 @@ void main(void) {
 
             case GAME_STATE_TITLE_DRAW:
                 banked_call(PRG_BANK_TITLE, draw_title_screen);
-                music_play(SONG_TITLE);
+                music_play(RI_TITLE_SONG_INT);
                 fade_in();
                 break;
             case GAME_STATE_TITLE_INPUT:
@@ -88,7 +88,7 @@ void main(void) {
                 set_rand(frameCount);
                 
                 // Map drawing is complete; let the player play the game!
-                music_play(RI_TITLE_SONG_INT);
+                music_play(SONG_OVERWORLD);
                 fade_in();
                 gameState = GAME_STATE_RUNNING;
                 break;
