@@ -23,6 +23,7 @@ This has the main loop for the game, which is then used to call out to other cod
 #include "source/menus/game_over.h"
 #include "source/configuration/player_info.h"
 #include "temp/sprite_groups.h"
+#include "source/configuration/game_info.h"
 
 
 // Method to set a bunch of variables to default values when the system starts up.
@@ -87,7 +88,7 @@ void main(void) {
                 set_rand(frameCount);
                 
                 // Map drawing is complete; let the player play the game!
-                music_play(SONG_OVERWORLD);
+                music_play(RI_TITLE_SONG);
                 fade_in();
                 gameState = GAME_STATE_RUNNING;
                 break;
