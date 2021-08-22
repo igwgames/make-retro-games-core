@@ -88,7 +88,7 @@ void main(void) {
                 set_rand(frameCount);
                 
                 // Map drawing is complete; let the player play the game!
-                music_play(RI_TITLE_SONG);
+                music_play(RI_TITLE_SONG_INT);
                 fade_in();
                 gameState = GAME_STATE_RUNNING;
                 break;

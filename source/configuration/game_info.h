@@ -9,7 +9,7 @@
     #define RI_GAME_AUTHOR_CONTACT "Tweet at us! @your_twitter"
     #define RI_GAME_YEAR "2020"
     #define RI_DEBUG_MODE_BOOL 1
-    #define RI_TITLE_SONG 0
+    #define RI_TITLE_SONG_INT 0
 // ----- END MAKERETROGAMES CODE REPLACEMENT ----- 
 
 extern const unsigned char gameName[];
